@@ -1,0 +1,413 @@
+/* ContactUsPage.css */
+
+/* Variables matching Eduverse theme */
+:root {
+    --ninja-black: #050510;
+    --ninja-dark: #0a0a1a;
+    --ninja-card: #151525;
+    --ninja-cyan: #00ffcc;
+    --ninja-blue: #00ccff;
+    --ninja-purple: #9d00ff;
+    --ninja-pink: #ff0055;
+    --ninja-text: #e0e0e0;
+}
+
+.contact-page-container {
+    background-color: var(--ninja-black);
+    min-height: 100vh;
+    padding-top: 80px;
+    /* Navbar offset */
+    color: var(--ninja-text);
+    overflow: hidden;
+    position: relative;
+    font-family: 'Inter', sans-serif;
+}
+
+/* Background Elements */
+.bg-gradient-orb {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(100px);
+    z-index: 0;
+    opacity: 0.3;
+}
+
+.orb-1 {
+    top: -10%;
+    left: -10%;
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, var(--ninja-cyan), transparent);
+    animation: float 10s ease-in-out infinite;
+}
+
+.orb-2 {
+    bottom: -10%;
+    right: -10%;
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(circle, var(--ninja-purple), transparent);
+    animation: float 8s ease-in-out infinite reverse;
+}
+
+/* Animations */
+@keyframes float {
+
+    0%,
+    100% {
+        transform: translate(0, 0);
+    }
+
+    50% {
+        transform: translate(30px, 30px);
+    }
+}
+
+@keyframes slideInUp {
+    from {
+        opacity: 0;
+        transform: translateY(50px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes glow {
+
+    0%,
+    100% {
+        box-shadow: 0 0 10px var(--ninja-cyan);
+    }
+
+    50% {
+        box-shadow: 0 0 25px var(--ninja-cyan), 0 0 10px var(--ninja-blue);
+    }
+}
+
+/* Main Content */
+.contact-content {
+    position: relative;
+    z-index: 2;
+}
+
+.section-title {
+    font-size: 3rem;
+    font-weight: 800;
+    background: linear-gradient(to right, var(--ninja-cyan), var(--ninja-purple));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    text-shadow: 0 0 20px rgba(0, 255, 204, 0.3);
+    margin-bottom: 1rem;
+    animation: slideInUp 0.8s ease-out;
+}
+
+.section-subtitle {
+    color: #a0a0b0;
+    font-size: 1.2rem;
+    max-width: 600px;
+    margin: 0 auto 3rem;
+    animation: slideInUp 1s ease-out;
+}
+
+/* Social Grid */
+.social-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 2rem;
+    margin-bottom: 4rem;
+}
+
+.social-card {
+    background: rgba(21, 21, 37, 0.6);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    padding: 2rem;
+    text-align: center;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    cursor: pointer;
+    text-decoration: none;
+    color: inherit;
+    position: relative;
+    overflow: hidden;
+}
+
+.social-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.05), transparent);
+    transform: translateX(-100%);
+    transition: 0.5s;
+}
+
+.social-card:hover::before {
+    transform: translateX(100%);
+}
+
+.social-card:hover {
+    transform: translateY(-10px) scale(1.02);
+    border-color: var(--color);
+    box-shadow: 0 10px 30px -10px var(--color);
+}
+
+.social-icon-wrapper {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    color: var(--color);
+    transition: transform 0.3s ease;
+}
+
+.social-card:hover .social-icon-wrapper {
+    transform: scale(1.2) rotate(10deg);
+}
+
+.social-name {
+    font-weight: 700;
+    font-size: 1.2rem;
+    margin-bottom: 0.5rem;
+}
+
+.social-handle {
+    color: #888;
+    font-size: 0.9rem;
+}
+
+/* Info Section & Form */
+.contact-split {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    align-items: start;
+}
+
+@media (max-width: 992px) {
+    .contact-split {
+        grid-template-columns: 1fr;
+    }
+}
+
+.info-panel {
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 20px;
+    padding: 2.5rem;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    animation: slideInUp 1.2s ease-out;
+}
+
+.info-item {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+    padding: 1rem;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 12px;
+    transition: transform 0.3s ease;
+}
+
+.info-item:hover {
+    transform: translateX(10px);
+    background: rgba(0, 255, 204, 0.05);
+    border: 1px solid rgba(0, 255, 204, 0.2);
+}
+
+.info-icon {
+    width: 50px;
+    height: 50px;
+    background: var(--ninja-cyan);
+    color: #000;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    box-shadow: 0 0 15px rgba(0, 255, 204, 0.3);
+}
+
+/* Contact Form */
+.ninja-form {
+    background: rgba(10, 10, 26, 0.8);
+    backdrop-filter: blur(10px);
+    padding: 2.5rem;
+    border-radius: 20px;
+    border: 1px solid rgba(0, 255, 204, 0.2);
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
+    animation: slideInUp 1.4s ease-out;
+    position: relative;
+}
+
+.ninja-form::after {
+    content: '';
+    position: absolute;
+    inset: -2px;
+    border-radius: 22px;
+    padding: 2px;
+    background: linear-gradient(45deg, var(--ninja-cyan), transparent, var(--ninja-purple));
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.ninja-input {
+    width: 100%;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #fff;
+    padding: 1rem 1.2rem;
+    border-radius: 10px;
+    font-size: 1rem;
+    outline: none;
+    transition: all 0.3s ease;
+}
+
+.ninja-input:focus {
+    background: rgba(0, 255, 204, 0.05);
+    border-color: var(--ninja-cyan);
+    box-shadow: 0 0 15px rgba(0, 255, 204, 0.1);
+}
+
+.ninja-btn {
+    width: 100%;
+    background: linear-gradient(45deg, var(--ninja-cyan), var(--ninja-blue));
+    color: #000;
+    font-weight: 800;
+    padding: 1rem;
+    border: none;
+    border-radius: 10px;
+    font-size: 1.1rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.ninja-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0 25px rgba(0, 204, 255, 0.4);
+}
+
+.ninja-btn svg {
+    margin-left: 10px;
+    animation: none;
+}
+
+.ninja-btn:hover svg {
+    animation: spin 0.5s ease-in-out;
+}
+
+/* Floating Shuriken Decoration */
+.shuriken-decor {
+    position: absolute;
+    color: rgba(255, 255, 255, 0.03);
+    font-size: 15rem;
+    z-index: 1;
+    animation: spin 20s linear infinite;
+    pointer-events: none;
+}
+
+.s-1 {
+    top: 10%;
+    right: -5%;
+}
+
+.s-2 {
+    bottom: 10%;
+    left: -5%;
+}
+
+/* Ninja Mascot Animation */
+.ninja-mascot-container {
+    position: absolute;
+    top: 120px;
+    right: 5%;
+    z-index: 1;
+    animation: floatingNinja 6s ease-in-out infinite;
+    pointer-events: none;
+    opacity: 0.15;
+}
+
+@media (max-width: 992px) {
+    .ninja-mascot-container {
+        display: none;
+    }
+}
+
+.ninja-mascot {
+    font-size: 15rem;
+    color: var(--ninja-cyan);
+    filter: drop-shadow(0 0 20px var(--ninja-cyan));
+    animation: glowPulse 3s infinite alternate;
+}
+
+.ninja-shadow {
+    width: 100px;
+    height: 10px;
+    background: rgba(0, 0, 0, 0.5);
+    border-radius: 50%;
+    margin: 20px auto 0;
+    filter: blur(5px);
+    animation: shadowScale 6s ease-in-out infinite;
+}
+
+@keyframes floatingNinja {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-20px);
+    }
+}
+
+@keyframes glowPulse {
+    from {
+        filter: drop-shadow(0 0 20px var(--ninja-cyan));
+    }
+
+    to {
+        filter: drop-shadow(0 0 40px var(--ninja-purple));
+        color: var(--ninja-text);
+    }
+}
+
+@keyframes shadowScale {
+
+    0%,
+    100% {
+        transform: scale(1);
+        opacity: 0.5;
+    }
+
+    50% {
+        transform: scale(0.8);
+        opacity: 0.3;
+    }
+}

@@ -1,0 +1,313 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap');
+
+.journal-container {
+    min-height: 100vh;
+    font-family: 'Outfit', sans-serif;
+    background-color: var(--bg-dark);
+    color: var(--text-primary);
+
+    background-image:
+        radial-gradient(circle at 10% 20%, rgba(29, 29, 50, 0.5) 0%, transparent 40%),
+        radial-gradient(circle at 90% 50%, rgba(60, 20, 100, 0.4) 0%, transparent 50%),
+        linear-gradient(to bottom, #050510 0%, #1a0b2e 100%);
+    background-attachment: fixed;
+    background-size: cover;
+}
+
+.journal-header h1 {
+    font-size: 2.5rem;
+    font-weight: 800;
+}
+
+/* Cards & Panels */
+.journal-card {
+    background: rgba(20, 20, 35, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    padding: 1.5rem;
+    backdrop-filter: blur(10px);
+    /* height: 100%;  <-- Removed this to fix the huge search box */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    display: flex;
+    flex-direction: column;
+}
+
+.journal-card:hover {
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    border-color: rgba(255, 255, 255, 0.15);
+}
+
+/* Journal Entry Item */
+.entry-item {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    padding: 1.25rem;
+    margin-bottom: 1rem;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+}
+
+.entry-item:hover {
+    background: rgba(255, 255, 255, 0.08);
+    transform: translateY(-2px) scale(1.01);
+    border-color: var(--accent-pink);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.entry-date {
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+    background: rgba(255, 255, 255, 0.05);
+    padding: 2px 8px;
+    border-radius: 4px;
+    display: inline-block;
+}
+
+.entry-mood {
+    font-size: 1.5rem;
+    line-height: 1;
+}
+
+/* Todo List Styling */
+.todo-item {
+    display: flex;
+    align-items: center;
+    padding: 0.8rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    transition: all 0.3s ease;
+}
+
+.todo-item:last-child {
+    border-bottom: none;
+}
+
+.todo-item.completed {
+    opacity: 0.5;
+}
+
+.todo-item.completed span {
+    text-decoration: line-through;
+    color: var(--text-secondary);
+}
+
+.todo-checkbox {
+    width: 20px;
+    height: 20px;
+    border-radius: 6px;
+    border: 2px solid var(--accent-purple);
+    margin-right: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    background: transparent;
+    transition: all 0.2s;
+    flex-shrink: 0;
+}
+
+.todo-checkbox.checked {
+    background: var(--accent-purple);
+    transform: scale(0.9);
+}
+
+/* Heatmap Calendar */
+.heatmap-grid {
+    display: grid;
+    gap: 6px;
+    margin-top: 1rem;
+}
+
+.heatmap-cell {
+    aspect-ratio: 1;
+    border-radius: 4px;
+    background: rgba(255, 255, 255, 0.05);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.7rem;
+    cursor: default;
+    transition: all 0.2s;
+    color: rgba(255, 255, 255, 0.3);
+}
+
+.heatmap-cell:hover {
+    transform: scale(1.2);
+    z-index: 2;
+    border: 1px solid white;
+}
+
+.heatmap-today {
+    border: 1px solid white;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+}
+
+.heatmap-selected {
+    border: 2px solid var(--accent-pink) !important;
+    background: rgba(255, 46, 99, 0.2) !important;
+    transform: scale(1.1);
+    z-index: 5;
+}
+
+.heatmap-level-0 {
+    background: rgba(255, 255, 255, 0.03);
+}
+
+.heatmap-level-1 {
+    background: rgba(74, 222, 128, 0.3);
+    color: white;
+    border: 1px solid rgba(74, 222, 128, 0.4);
+}
+
+.heatmap-level-2 {
+    background: rgba(74, 222, 128, 0.6);
+    color: white;
+    border: 1px solid rgba(74, 222, 128, 0.7);
+}
+
+.heatmap-level-3 {
+    background: rgba(74, 222, 128, 0.9);
+    color: white;
+    border: 1px solid rgba(74, 222, 128, 1);
+    box-shadow: 0 0 8px rgba(74, 222, 128, 0.4);
+}
+
+.xsmall {
+    font-size: 0.7rem;
+}
+
+/* Habit Tracker */
+.habit-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.8rem 1rem;
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 12px;
+    margin-bottom: 0.8rem;
+    border: 1px solid transparent;
+    transition: all 0.2s;
+}
+
+.habit-row:hover {
+    background: rgba(255, 255, 255, 0.06);
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+.habit-streak {
+    background: rgba(255, 107, 107, 0.15);
+    color: #ff6b6b;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    border: 1px solid rgba(255, 107, 107, 0.2);
+}
+
+/* Editor Styles */
+.journal-editor-textarea {
+    background: transparent;
+    border: none;
+    color: var(--text-primary);
+    font-size: 1.15rem;
+    line-height: 1.7;
+    resize: none;
+    width: 100%;
+    min-height: 500px;
+    outline: none;
+    padding: 0.5rem;
+}
+
+.journal-editor-textarea::placeholder {
+    color: rgba(255, 255, 255, 0.2);
+}
+
+.mood-selector button {
+    font-size: 1.5rem;
+    background: rgba(255, 255, 255, 0.05);
+    border: 2px solid transparent;
+    border-radius: 50%;
+    width: 48px;
+    height: 48px;
+    transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.mood-selector button:hover {
+    background: rgba(255, 255, 255, 0.1);
+    transform: scale(1.1);
+}
+
+.mood-selector button.active {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: var(--accent-purple);
+    transform: scale(1.15);
+    box-shadow: 0 0 15px rgba(157, 78, 221, 0.3);
+}
+
+/* Custom Scrollbar for widgets */
+.custom-scrollbar::-webkit-scrollbar {
+    width: 6px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.02);
+    border-radius: 3px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 3px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.scale-110 {
+    transform: scale(1.1);
+}
+
+.add-btn-circle {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--gradient-btn);
+    border: none;
+    color: white;
+    font-size: 1.5rem;
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    box-shadow: 0 5px 15px rgba(157, 78, 221, 0.4);
+    cursor: pointer;
+}
+
+.add-btn-circle:hover {
+    transform: rotate(90deg) scale(1.1);
+    box-shadow: 0 8px 25px rgba(157, 78, 221, 0.6);
+}
+
+/* Utility */
+.hover-danger:hover {
+    color: #ef4444 !important;
+}
+
+.hover-opacity-100:hover {
+    opacity: 1 !important;
+}
+
+.bg-opacity-25 {
+    --bs-bg-opacity: 0.25;
+}
+
+.transition-all {
+    transition: all 0.2s ease;
+}

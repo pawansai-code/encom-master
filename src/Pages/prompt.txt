@@ -1,0 +1,3 @@
+design or develop 10 profile avatars that should be kept in the shopping section in rewards page where only two avatar kept for free and remaining 8 should be some cost 
+there in wallet using the coins the user can buy the avatars and add them as their profile pic avatar
+note: all should be fully functional and dynamic and made based on the ninja theme and made for both girls and boys use the pre used styles and files and folders and dont change any other files folders and layouts use same code base and code patterns and make it neat structured 

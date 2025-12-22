@@ -6,6 +6,8 @@ import {
     FaBriefcase,
     FaCalendarAlt,
     FaChartLine,
+    FaFire,
+    FaGamepad,
     FaHistory,
     FaHome,
     FaInfoCircle,
@@ -13,8 +15,9 @@ import {
     FaMapMarkerAlt,
     FaNewspaper,
     FaPhone,
+    FaTools,
     FaTrophy,
-    FaUtensils,
+    FaUtensils
 } from "react-icons/fa";
 import { Link, useLocation } from "react-router-dom";
 import useTranslation from "../../hooks/useTranslation";
@@ -27,6 +30,11 @@ const Navigation = ({ includeSearch = false }) => {
 
   const navItems = [
     { icon: FaHome, label: t("Home"), path: "/" },
+    { icon: FaRobot, label: "Chatbot", path: "/chatbot" },
+    { icon: FaTools, label: t("Tools"), path: "/tools" },
+    { icon: FaGamepad, label: t("Funzone"), path: "/funzone" },
+    { icon: FaBook, label: t("Journal"), path: "/journal" },
+    { icon: FaFire, label: t("Streaks"), path: "/streaks" },
     { icon: FaBriefcase, label: t("Jobs"), path: "/jobs" },
     { icon: FaNewspaper, label: t("News"), path: "/news" },
     { icon: FaInfoCircle, label: t("UpdatesInfo"), path: "/updates" },
@@ -43,6 +51,10 @@ const Navigation = ({ includeSearch = false }) => {
 
   const hubNavItems = [
     { icon: FaHome, label: t("Home"), path: "/HomePage" },
+    { icon: FaTools, label: t("Tools"), path: "/tools" },
+    { icon: FaGamepad, label: t("Funzone"), path: "/funzone" },
+    { icon: FaBook, label: t("Journal"), path: "/journal" },
+    { icon: FaFire, label: t("Streaks"), path: "/streaks" },
     { icon: FaBriefcase, label: t("Jobs"), path: "/hub/jobs" },
     { icon: FaNewspaper, label: t("News"), path: "/hub/news" },
     { icon: FaInfoCircle, label: t("UpdatesInfo"), path: "/hub/updates" },

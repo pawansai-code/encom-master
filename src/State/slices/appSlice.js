@@ -2,6 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
     language: 'en',
+    activePage: 'home',
 };
 
 const appSlice = createSlice({
@@ -11,9 +12,12 @@ const appSlice = createSlice({
         setLanguage: (state, action) => {
             state.language = action.payload;
         },
+        setActivePage: (state, action) => {
+            state.activePage = action.payload;
+        },
     },
 });
 
-export const { setLanguage } = appSlice.actions;
+export const { setLanguage, setActivePage } = appSlice.actions;
 
 export default appSlice.reducer;

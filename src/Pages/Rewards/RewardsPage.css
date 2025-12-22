@@ -1,0 +1,333 @@
+/* Rewards Page Styles */
+:root {
+    --reward-bg-dark: #05050f;
+    --reward-card-bg: rgba(20, 20, 35, 0.6);
+    --reward-glass: rgba(255, 255, 255, 0.05);
+    --reward-border: rgba(255, 255, 255, 0.1);
+    --reward-accent-pink: #ff2e63;
+    --reward-accent-purple: #9d4edd;
+    --reward-ninja-red: #d00000;
+    --reward-cute-pink: #ff8fab;
+    --reward-gradient: linear-gradient(135deg, #ff2e63 0%, #9d4edd 100%);
+}
+
+.rewards-page {
+    min-height: 100vh;
+    padding: 100px 20px 40px;
+    /* Top padding for navbar */
+    background: var(--bg-dark);
+    background-image:
+        radial-gradient(circle at 10% 20%, rgba(29, 29, 50, 0.5) 0%, transparent 40%),
+        radial-gradient(circle at 90% 50%, rgba(60, 20, 100, 0.4) 0%, transparent 50%),
+        linear-gradient(to bottom, #050510 0%, #1a0b2e 100%);
+    background-attachment: fixed;
+    color: white;
+    font-family: 'Outfit', sans-serif;
+}
+
+.rewards-container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.rewards-header {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.rewards-title {
+    font-size: 48px;
+    font-weight: 800;
+    margin-bottom: 10px;
+    background: var(--reward-gradient);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.rewards-subtitle {
+    font-size: 18px;
+    color: var(--text-secondary);
+}
+
+/* Sections Grid */
+.rewards-grid {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: 20px;
+    margin-bottom: 40px;
+}
+
+.rewards-card {
+    background: var(--reward-card-bg);
+    border: 1px solid var(--reward-border);
+    border-radius: 16px;
+    padding: 20px;
+    backdrop-filter: blur(10px);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.rewards-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    border-color: rgba(157, 78, 221, 0.3);
+}
+
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--reward-border);
+}
+
+.card-title {
+    font-size: 20px;
+    font-weight: 700;
+    color: white;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* Progress Section (Top) */
+.progress-section {
+    grid-column: span 12;
+    background: linear-gradient(135deg, rgba(20, 20, 35, 0.9), rgba(40, 20, 60, 0.9));
+}
+
+.xp-bar-container {
+    position: relative;
+    height: 30px;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 15px;
+    overflow: hidden;
+    margin: 20px 0 10px;
+}
+
+.xp-bar-fill {
+    height: 100%;
+    background: var(--reward-gradient);
+    border-radius: 15px;
+    transition: width 1s ease-in-out;
+    position: relative;
+}
+
+.xp-bar-fill::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+    animation: shine 2s infinite;
+}
+
+.xp-text {
+    display: flex;
+    justify-content: space-between;
+    font-size: 14px;
+    color: var(--text-secondary);
+    font-weight: 500;
+}
+
+.level-badge {
+    position: absolute;
+    right: 20px;
+    top: 20px;
+    background: var(--reward-accent-pink);
+    padding: 5px 15px;
+    border-radius: 20px;
+    font-weight: 800;
+    box-shadow: 0 0 15px rgba(255, 46, 99, 0.4);
+}
+
+/* Wallet Section */
+.wallet-section {
+    grid-column: span 4;
+}
+
+.currency-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(0, 0, 0, 0.2);
+    padding: 15px;
+    border-radius: 12px;
+    margin-bottom: 10px;
+}
+
+.currency-icon {
+    font-size: 24px;
+}
+
+.currency-amount {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--reward-accent-purple);
+}
+
+/* Badges Section */
+.badges-section {
+    grid-column: span 8;
+}
+
+.badges-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    gap: 15px;
+}
+
+.badge-item {
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 12px;
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    border: 1px solid transparent;
+}
+
+.badge-item:hover {
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.badge-item.locked {
+    opacity: 0.5;
+    filter: grayscale(1);
+}
+
+.badge-icon {
+    font-size: 40px;
+    margin-bottom: 10px;
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.badge-item:hover .badge-icon {
+    transform: scale(1.2);
+}
+
+.badge-name {
+    font-size: 12px;
+    font-weight: 600;
+    color: #e2e8f0;
+}
+
+/* Ninja Theme Badge */
+.badge-item.ninja {
+    border-color: rgba(208, 0, 0, 0.3);
+}
+
+.badge-item.ninja:hover {
+    box-shadow: 0 0 15px rgba(208, 0, 0, 0.2);
+}
+
+/* Cute Theme Badge */
+.badge-item.cute {
+    border-color: rgba(255, 143, 171, 0.3);
+}
+
+.badge-item.cute:hover {
+    box-shadow: 0 0 15px rgba(255, 143, 171, 0.2);
+}
+
+/* Medals Gallery */
+.medals-section {
+    grid-column: span 6;
+}
+
+.medals-display {
+    display: flex;
+    justify-content: space-around;
+    padding: 20px 0;
+}
+
+.medal-spot {
+    text-align: center;
+    position: relative;
+}
+
+.medal-count {
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    background: var(--reward-accent-pink);
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.medal-icon {
+    font-size: 50px;
+    filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.3));
+}
+
+/* Titles Section */
+.titles-section {
+    grid-column: span 6;
+}
+
+.titles-list {
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+.title-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 12px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.title-item.active-title {
+    background: rgba(157, 78, 221, 0.1);
+    border-left: 3px solid var(--reward-accent-purple);
+}
+
+.title-name {
+    font-weight: 600;
+}
+
+.equip-btn {
+    background: transparent;
+    border: 1px solid var(--reward-accent-purple);
+    color: var(--reward-accent-purple);
+    padding: 4px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 12px;
+}
+
+.equip-btn:hover {
+    background: var(--reward-accent-purple);
+    color: white;
+}
+
+/* Animations */
+@keyframes shine {
+    0% {
+        transform: translateX(-100%);
+    }
+
+    100% {
+        transform: translateX(100%);
+    }
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+    .rewards-grid {
+        display: flex;
+        flex-direction: column;
+    }
+}

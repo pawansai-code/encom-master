@@ -1,24 +1,22 @@
-import "bootstrap-icons/font/bootstrap-icons.css";
-import "bootstrap/dist/css/bootstrap.min.css";
-import Footer from "../../Layout/Footer/Footer";
-import MainHeader from "../../Layout/Mainheader/Mainheader";
-import Navbar from "../../Layout/Navigation/Navigation";
-// import Carousel from "../../Layout/carousel/Carousel";
+import Announcements from '../../Components/Homepage/Announcements';
+import Features from '../../Components/Homepage/Features';
+import Hero from '../../Components/Homepage/Hero';
+import HomeCarousel from '../../Components/Homepage/HomeCarousel';
+import HomeFooter from '../../Components/Homepage/HomeFooter';
+import HomeNavbar from '../../Components/Homepage/HomeNavbar';
+import './styles/Homepage.css';
 
 const HomePage = () => {
-  return (
-    <div>
-        <MainHeader
-                siteName="NELLOREHUB.IN"
-                tagline="Explore, Discover, Connect"
-            />
-            <Navbar includeSearch={false} />
-            <Footer
-                siteName="NELLOREHUB.IN"
-                tagline="Your trusted gateway to explore Nellore"
-            />
-    </div>
-  );
+    return (
+        <div className="homepage-container">
+            <HomeNavbar />
+            <div id="home"><Hero /></div>
+            <div id="features"><Features /></div>
+            <div id="announcements"><Announcements /></div>
+            <div id="showcase"><HomeCarousel /></div>
+            <div id="contact"><HomeFooter /></div>
+        </div>
+    );
 };
 
 export default HomePage;

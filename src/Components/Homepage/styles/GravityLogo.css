@@ -1,0 +1,66 @@
+.gravity-container {
+    display: flex;
+    justify-content: center;
+    overflow: hidden;
+    margin-bottom: 20px;
+}
+
+.gravity-text {
+    display: flex;
+    gap: 5px;
+    /* Space between letters */
+}
+
+.gravity-char {
+    font-size: 80px;
+    /* Big branding size */
+    font-weight: 900;
+    color: transparent;
+    -webkit-text-stroke: 2px rgba(255, 255, 255, 0.8);
+    /* Outline style initially? Or just filled. Let's go filled or gradient */
+    background: linear-gradient(180deg, #ffffff 0%, #a5b4fc 100%);
+    background-clip: text;
+    -webkit-background-clip: text;
+    fill: transparent;
+    /* For SVG text if used, but we use div text here */
+
+    opacity: 0;
+    transform: translateY(-200px);
+    display: inline-block;
+    filter: drop-shadow(0 0 10px rgba(165, 180, 252, 0.5));
+}
+
+/* Neon variation for specific letters if needed, or all */
+.gravity-char {
+    background: linear-gradient(to bottom, #fff, #b9b9b9);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+}
+
+
+@keyframes fall-and-settle {
+    0% {
+        opacity: 0;
+        transform: translateY(-300px) rotate(-10deg);
+    }
+
+    60% {
+        opacity: 1;
+        transform: translateY(20px) rotate(5deg);
+    }
+
+    80% {
+        transform: translateY(-10px) rotate(-2deg);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0) rotate(0deg);
+    }
+}
+
+.gravity-char.animate {
+    animation: fall-and-settle 1.5s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+}
