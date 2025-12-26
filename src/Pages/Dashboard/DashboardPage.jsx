@@ -3,16 +3,22 @@ import { Link } from 'react-router-dom';
 import HomeNavbar from '../../Components/Homepage/HomeNavbar'; // Or specific Dashboard Navbar
 import './styles/Dashboard.css';
 
+import { useSelector } from 'react-redux';
+import { selectUser } from '../../State/slices/userSlice';
+
 const DashboardPage = () => {
-    // Mock user data - normally from Redux/API
-    const user = {
+    const userProfile = useSelector(selectUser);
+    
+    // Default fallback if redux state is not fully populated yet
+    const user = userProfile?.data || {
         name: "Ninja Student",
-        level: 5,
-        xp: 2450,
-        nextLevelXp: 3000,
-        streak: 12,
-        rank: "Chunin"
+        level: 1,
+        xp: 0,
+        nextLevelXp: 1000,
+        streak: 0,
+        rank: "Novice"
     };
+
 
     const recentActivity = [
         { id: 1, text: "Completed 'Calculus I' Quiz", time: "2 hours ago", xp: "+50 XP" },

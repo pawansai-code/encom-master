@@ -1,9 +1,3 @@
-import {
-    getAuth,
-    GoogleAuthProvider,
-    OAuthProvider,
-    signInWithPopup
-} from 'firebase/auth';
 import { FaApple, FaMicrosoft, FaPhone } from 'react-icons/fa';
 import { FcGoogle } from 'react-icons/fc';
 import { useDispatch } from 'react-redux';
@@ -14,20 +8,25 @@ import './SocialButtons.css';
 const SocialButtons = ({ onPhoneClick }) => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const auth = getAuth();
 
     const handleSocialLogin = async (provider) => {
         try {
-            const result = await signInWithPopup(auth, provider);
-            const user = result.user;
+            // Mock Social Login
+            const mockUser = {
+                uid: 'mock-social-uid-' + Date.now(),
+                email: 'social@eduverse.com',
+                displayName: 'Social Ninja',
+                photoURL: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Social',
+                emailVerified: true
+            };
             
             // Dispatch user to Redux
             dispatch(setUser({
-                uid: user.uid,
-                email: user.email,
-                name: user.displayName || 'Ninja Student',
-                photoURL: user.photoURL,
-                emailVerified: user.emailVerified,
+                uid: mockUser.uid,
+                email: mockUser.email,
+                name: mockUser.displayName || 'Ninja Student',
+                photoURL: mockUser.photoURL,
+                emailVerified: mockUser.emailVerified,
             }));
             
             navigate('/dashboard');
@@ -37,9 +36,9 @@ const SocialButtons = ({ onPhoneClick }) => {
         }
     };
 
-    const loginGoogle = () => handleSocialLogin(new GoogleAuthProvider());
-    const loginMicrosoft = () => handleSocialLogin(new OAuthProvider('microsoft.com'));
-    const loginApple = () => handleSocialLogin(new OAuthProvider('apple.com'));
+    const loginGoogle = () => handleSocialLogin('google');
+    const loginMicrosoft = () => handleSocialLogin('microsoft');
+    const loginApple = () => handleSocialLogin('apple');
 
     return (
         <div className="social-login-container">

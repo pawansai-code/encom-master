@@ -1,6 +1,4 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { child, get, push, ref, remove, set } from 'firebase/database';
-import { auth, database } from '../../firebase';
 
 // Helper to filter bad words
 const BAD_WORDS = ['badword', 'abuse', 'hate', 'kill']; // Example list
@@ -14,19 +12,12 @@ export const fetchJournal = createAsyncThunk(
     'journal/fetch',
     async (_, { rejectWithValue }) => {
         try {
-            const user = auth.currentUser;
-            if (!user) throw new Error('No user logged in');
-
-            const snapshot = await get(child(ref(database), `users/${user.uid}/journal`));
-            if (snapshot.exists()) {
-                const data = snapshot.val();
-                return {
-                    entries: data.entries ? Object.values(data.entries) : [],
-                    todos: data.todos ? Object.values(data.todos) : [],
-                    habits: data.habits ? Object.values(data.habits) : []
-                };
-            }
-            return { entries: [], todos: [], habits: [] };
+            // Mock Fetch Journal
+            return {
+                entries: [],
+                todos: [],
+                habits: []
+            };
         } catch (error) {
             return rejectWithValue(error.message);
         }
@@ -37,29 +28,14 @@ export const addEntry = createAsyncThunk(
     'journal/addEntry',
     async (entryData, { rejectWithValue, dispatch }) => {
         try {
-            const user = auth.currentUser;
-            if (!user) throw new Error('No user logged in');
-
-            const newEntryRef = push(child(ref(database), `users/${user.uid}/journal/entries`));
             const newEntry = {
-                id: newEntryRef.key,
+                id: 'mock-entry-' + Date.now(),
                 date: new Date().toISOString().split('T')[0],
                 timestamp: new Date().toISOString(),
                 ...entryData,
-                userId: user.uid,
-                userName: user.displayName
+                userId: 'mock-user-id',
+                userName: 'Ninja Student'
             };
-
-            await set(newEntryRef, newEntry);
-
-            // Safety Check: Flag if necessary
-            if (containsBadWords(newEntry.content + ' ' + newEntry.title)) {
-                // Save reference to admin node
-                await set(ref(database, `admin/flagged_journals/${newEntry.id}`), {
-                    ...newEntry,
-                    flaggedReason: 'Content Safety'
-                });
-            }
 
             return newEntry;
         } catch (error) {
@@ -72,10 +48,7 @@ export const updateEntry = createAsyncThunk(
     'journal/updateEntry',
     async ({ id, ...updates }, { rejectWithValue }) => {
         try {
-            const user = auth.currentUser;
-            if (!user) throw new Error('No user logged in');
-
-            await update(ref(database, `users/${user.uid}/journal/entries/${id}`), updates);
+            // Mock Update Entry
             return { id, ...updates };
         } catch (error) {
             return rejectWithValue(error.message);
@@ -87,10 +60,7 @@ export const deleteEntry = createAsyncThunk(
     'journal/deleteEntry',
     async (entryId, { rejectWithValue }) => {
         try {
-            const user = auth.currentUser;
-            if (!user) throw new Error('No user logged in');
-
-            await remove(ref(database, `users/${user.uid}/journal/entries/${entryId}`));
+            // Mock Delete Entry
             return entryId;
         } catch (error) {
             return rejectWithValue(error.message);
@@ -103,10 +73,7 @@ export const fetchFlaggedEntries = createAsyncThunk(
     'journal/fetchFlagged',
     async (_, { rejectWithValue }) => {
         try {
-            const snapshot = await get(child(ref(database), 'admin/flagged_journals'));
-            if (snapshot.exists()) {
-                return Object.values(snapshot.val());
-            }
+            // Mock Fetch Flagged
             return [];
         } catch (error) {
             return rejectWithValue(error.message);
@@ -119,11 +86,7 @@ export const addTodo = createAsyncThunk(
     'journal/addTodo',
     async (text, { rejectWithValue }) => {
         try {
-            const user = auth.currentUser;
-            if (!user) throw new Error('No user logged in');
-            const newRef = push(child(ref(database), `users/${user.uid}/journal/todos`));
-            const newTodo = { id: newRef.key, text, completed: false };
-            await set(newRef, newTodo);
+            const newTodo = { id: 'mock-todo-' + Date.now(), text, completed: false };
             return newTodo;
         } catch (error) { return rejectWithValue(error.message); }
     }
@@ -133,12 +96,6 @@ export const toggleTodo = createAsyncThunk(
     'journal/toggleTodo',
     async (id, { rejectWithValue, getState }) => {
         try {
-            const user = auth.currentUser;
-            const todos = getState().journal.todos;
-            const todo = todos.find(t => t.id === id);
-            if (!todo) throw new Error('Todo not found');
-
-            await update(ref(database, `users/${user.uid}/journal/todos/${id}`), { completed: !todo.completed });
             return id;
         } catch (error) { return rejectWithValue(error.message); }
     }
@@ -148,8 +105,6 @@ export const deleteTodo = createAsyncThunk(
     'journal/deleteTodo',
     async (id, { rejectWithValue }) => {
         try {
-            const user = auth.currentUser;
-            await remove(ref(database, `users/${user.uid}/journal/todos/${id}`));
             return id;
         } catch (error) { return rejectWithValue(error.message); }
     }
@@ -160,11 +115,7 @@ export const addHabit = createAsyncThunk(
     'journal/addHabit',
     async (name, { rejectWithValue }) => {
         try {
-            const user = auth.currentUser;
-            if (!user) throw new Error('No user logged in');
-            const newRef = push(child(ref(database), `users/${user.uid}/journal/habits`));
-            const newHabit = { id: newRef.key, name, streak: 0, completedDates: [] };
-            await set(newRef, newHabit);
+            const newHabit = { id: 'mock-habit-' + Date.now(), name, streak: 0, completedDates: [] };
             return newHabit;
         } catch (error) { return rejectWithValue(error.message); }
     }
@@ -174,7 +125,6 @@ export const toggleHabit = createAsyncThunk(
     'journal/toggleHabit',
     async ({ id, date }, { rejectWithValue, getState }) => {
         try {
-            const user = auth.currentUser;
             const habits = getState().journal.habits;
             const habit = habits.find(h => h.id === id);
             if (!habit) throw new Error('Habit not found');
@@ -190,8 +140,6 @@ export const toggleHabit = createAsyncThunk(
                 completedDates.splice(index, 1);
                 newStreak = Math.max(0, newStreak - 1);
             }
-
-            await update(ref(database, `users/${user.uid}/journal/habits/${id}`), { completedDates, streak: newStreak });
             return { id, completedDates, streak: newStreak };
         } catch (error) { return rejectWithValue(error.message); }
     }
@@ -201,8 +149,6 @@ export const deleteHabit = createAsyncThunk(
     'journal/deleteHabit',
     async (id, { rejectWithValue }) => {
         try {
-            const user = auth.currentUser;
-            await remove(ref(database, `users/${user.uid}/journal/habits/${id}`));
             return id;
         } catch (error) { return rejectWithValue(error.message); }
     }

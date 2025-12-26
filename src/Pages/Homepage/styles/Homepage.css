@@ -956,3 +956,325 @@ body {
         align-self: flex-end;
     }
 }
+
+/* Dropdown Styles - Dynamic & Interactive */
+.dropdown-menu {
+    background: rgba(5, 5, 16, 0.95);
+    backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    padding: 10px;
+    margin-top: 15px !important;
+    /* Spacing from nav */
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+    animation: fadeInUp 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+    min-width: 220px;
+    transform-origin: top center;
+}
+
+/* Arrow indicator on top of dropdown */
+.dropdown-menu::before {
+    content: '';
+    position: absolute;
+    top: -6px;
+    left: 20px;
+    width: 12px;
+    height: 12px;
+    background: inherit;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    border-left: 1px solid rgba(255, 255, 255, 0.1);
+    transform: rotate(45deg);
+    z-index: -1;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(15px) scale(0.95);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.dropdown-item {
+    color: var(--text-secondary);
+    font-weight: 500;
+    padding: 10px 16px;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    background: transparent;
+    position: relative;
+    overflow: hidden;
+    margin-bottom: 4px;
+    font-family: 'Outfit', sans-serif;
+    /* Ensure font consistency */
+}
+
+.dropdown-item:last-child {
+    margin-bottom: 0;
+}
+
+.dropdown-item:hover,
+.dropdown-item:focus {
+    background: rgba(255, 255, 255, 0.05);
+    /* Subtle hover bg */
+    color: #fff;
+    padding-left: 22px;
+    /* Slight shift effect */
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+}
+
+/* Active State for Dropdown Items */
+.dropdown-item.active,
+.dropdown-item:active {
+    background: var(--gradient-btn);
+    color: white;
+}
+
+/* Custom left border accent on hover */
+.dropdown-item::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: 3px;
+    height: 0%;
+    background: var(--accent-pink);
+    transform: translateY(-50%);
+    transition: height 0.3s ease;
+    border-radius: 0 2px 2px 0;
+}
+
+.dropdown-item:hover::before {
+    height: 60%;
+}
+
+/* Dropdown Toggle Caret Styling */
+.nav-link.dropdown-toggle::after {
+    border: none;
+    content: '▾';
+    margin-left: 6px;
+    font-size: 12px;
+    transition: transform 0.3s ease;
+    vertical-align: middle;
+}
+
+/* Rotate caret when dropdown is active (Bootstrap adds 'show' class to parent usually) */
+.nav-item.dropdown:hover .dropdown-toggle::after,
+.dropdown-toggle[aria-expanded="true"]::after {
+    transform: rotate(180deg);
+    color: var(--accent-pink);
+}
+
+/* Ensure hover triggers for desktop if users prefer non-click */
+@media (min-width: 992px) {
+    .nav-item.dropdown:hover .dropdown-menu {
+        display: block;
+        animation: fadeInUp 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+    }
+}
+
+/* Scroll Reveal Animations */
+.reveal-section {
+    opacity: 0;
+    transform: translateY(60px);
+    transition: all 1s cubic-bezier(0.5, 0, 0, 1);
+    will-change: opacity, transform;
+}
+
+.reveal-section.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Features Animations & Styles (Moved from Features.jsx) */
+.step-card {
+    transition: all 0.4s ease;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    position: relative;
+    overflow: hidden;
+}
+
+/* Neon Border Effect on Hover */
+.step-card:hover {
+    transform: translateY(-15px) scale(1.02);
+    background: rgba(30, 30, 50, 0.8) !important;
+    box-shadow:
+        0 0 5px #fff,
+        0 0 40px #fe019a;
+    /* Neon Glow */
+    border-color: #fe019a !important;
+}
+
+/* Optional: Animated border tracing */
+.step-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-radius: inherit;
+    padding: 2px;
+    background: linear-gradient(90deg, #ff00cc, #333399, #00d4ff);
+    -webkit-mask:
+        linear-gradient(#fff 0 0) content-box,
+        linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+}
+
+.step-card:hover::before {
+    opacity: 1;
+    animation: borderRotate 2s linear infinite;
+}
+
+.step-card:hover .feature-icon-wrapper {
+    transform: scale(1.1) rotate(5deg);
+    text-shadow: 0 0 10px currentColor;
+    /* Glow text/icon */
+}
+
+.step-icon-glow {
+    position: relative;
+}
+
+.pulse-ring {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-radius: 50%;
+    border: 2px solid currentColor;
+    opacity: 0;
+    animation: pulse 2s infinite;
+}
+
+.step-hover-line {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0%;
+    height: 3px;
+    background: linear-gradient(90deg, #ff2e63, #9d4edd);
+    transition: width 0.4s ease;
+}
+
+.step-card:hover .step-hover-line {
+    width: 100%;
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+        opacity: 0.5;
+    }
+
+    100% {
+        transform: scale(1.5);
+        opacity: 0;
+    }
+}
+
+/* New Animations for Motto */
+.animate-slide-up {
+    opacity: 0;
+    animation: slideUp 0.8s ease-out forwards;
+}
+
+.animate-reveal-text {
+    opacity: 0;
+    transform: translateY(100%);
+    animation: revealText 0.8s cubic-bezier(0.77, 0, 0.175, 1) forwards;
+}
+
+.animate-width {
+    animation: expandWidth 0.8s ease-out forwards;
+}
+
+.animate-fade-in {
+    opacity: 0;
+    animation: fadeIn 1s ease-out forwards;
+}
+
+.animate-float-slow {
+    animation: float 6s ease-in-out infinite;
+}
+
+.shimmer-text {
+    color: rgba(255, 255, 255, 0.1);
+    background: linear-gradient(to right, #4d4d4d 0%, #fff 50%, #4d4d4d 100%);
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: shimmer 3s linear infinite;
+}
+
+.text-shadow-glow {
+    text-shadow: 0 0 10px rgba(255, 193, 7, 0.5);
+    animation: glowPulse 2s infinite alternate;
+}
+
+@keyframes slideUp {
+    from {
+        transform: translateY(20px);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+@keyframes revealText {
+    from {
+        transform: translateY(100%);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+@keyframes expandWidth {
+    to {
+        transform: scaleX(1);
+    }
+}
+
+@keyframes shimmer {
+    to {
+        background-position: 200% center;
+    }
+}
+
+@keyframes float {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+@keyframes glowPulse {
+    from {
+        text-shadow: 0 0 5px rgba(255, 193, 7, 0.2);
+    }
+
+    to {
+        text-shadow: 0 0 20px rgba(255, 193, 7, 0.8), 0 0 30px rgba(255, 193, 7, 0.6);
+    }
+}

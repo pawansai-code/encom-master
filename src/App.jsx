@@ -1,7 +1,13 @@
-import { Route, Routes } from 'react-router-dom';
-import './App.css';
-import FloatingChatbotIcon from './Components/Common/FloatingChatbotIcon.jsx';
-import GlobalNinjaGuide from './Components/Common/GlobalNinjaGuide';
+import { jwtDecode } from 'jwt-decode';
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { Navigate, Route, Routes } from 'react-router-dom';
+import ChatbotFloatingIcon from './Components/Common/ChatbotFloatingIcon';
+import NinjaLoader from './Components/Common/NinjaLoader';
+import { setLoading, setUser } from './State/slices/userSlice';
+
+
+
 import AboutPage from './Pages/About/AboutPage';
 import AdminDashboard from './Pages/Admin/AdminDashboard';
 import AdminLoginPage from './Pages/Auth/AdminLoginPage';
@@ -11,111 +17,101 @@ import LoginPage from './Pages/Auth/LoginPage';
 import ResetPasswordPage from './Pages/Auth/ResetPasswordPage';
 import SignupPage from './Pages/Auth/SignupPage';
 import VerifyEmailPage from './Pages/Auth/VerifyEmailPage';
-import ChatbotPage from './Pages/Chatbot/ChatbotPage.jsx';
 import ContactUs from './Pages/ContactUs/ContactUs';
 import DashboardPage from './Pages/Dashboard/DashboardPage';
 import FunzoneHub from './Pages/Funzone/FunzoneHub';
 import GameView from './Pages/Funzone/GameView';
-import HomePage from './Pages/Homepage/Homepage';
-import JournalEntry from './Pages/Journal/JournalEntry';
+import Homepage from './Pages/Homepage/Homepage';
 import JournalHub from './Pages/Journal/JournalHub';
-import LeaderboardsHub from './Pages/Leaderboards/LeaderboardsHub';
-import ProfilePage from './Pages/Profile/ProfilePage';
-import RewardsPage from './Pages/Rewards/RewardsPage';
 import SettingsPage from './Pages/Settings/SettingsPage';
 import StreaksPage from './Pages/Streaks/StreaksPage';
+// Additional Features
 import ToolsHub from './Pages/Tools/ToolsHub';
 import ToolView from './Pages/Tools/ToolView';
 
-import { onAuthStateChanged } from 'firebase/auth';
-import { get, ref } from 'firebase/database';
-import { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
-import { auth, database } from './firebase';
-import { setUser } from './State/slices/userSlice';
+// Features
+import ChatbotPage from './Pages/Chatbot/ChatbotPage';
+import LeaderboardsHub from './Pages/Leaderboards/LeaderboardsHub';
+import RewardsPage from './Pages/Rewards/RewardsPage';
+
 
 function App() {
   const dispatch = useDispatch();
+  const { profile: user, status } = useSelector((state) => state.user);
+  const loading = status === 'loading';
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, async (user) => {
-      if (user) {
-        // User is signed in, fetch extra data from Realtime Database
+    // Check for existing token
+    const token = localStorage.getItem('token');
+    if (token) {
         try {
-          // Use direct ref path to avoid 'pieceNum_' internal errors
-          const userRef = ref(database, `users/${user.uid}`); 
-          const snapshot = await get(userRef);
-          
-          let userData = null;
-          if (snapshot.exists()) {
-            userData = snapshot.val();
-          }
-          
-          dispatch(setUser({
-            uid: user.uid,
-            email: user.email,
-            name: user.displayName || 'Ninja Student',
-            photoURL: user.photoURL,
-            emailVerified: user.emailVerified,
-            data: userData
-          }));
+            const decoded = jwtDecode(token);
+            // Check expiry
+            if (decoded.exp * 1000 < Date.now()) {
+                localStorage.removeItem('token');
+            } else {
+                // Restore user state
+                dispatch(setUser({
+                    uid: decoded.id,
+                    email: decoded.email || '', // Depending on what's in token
+                    role: decoded.role,
+                    data: {
+                      role: decoded.role,
+                      name: decoded.name || 'Ninja Student', // Decode name if in token, else fallback
+                      email: decoded.email
+                    }
+                }));
+            }
         } catch (error) {
-          console.warn("App: DB Fetch failed (Permission/Network). Proceeding with Auth-Only user.", error.code || error);
-          
-          // CRITICAL FIX: Still log the user in, just without extra DB data
-           dispatch(setUser({
-            uid: user.uid,
-            email: user.email,
-            name: user.displayName || 'Ninja Student',
-            photoURL: user.photoURL,
-            emailVerified: user.emailVerified,
-            data: { role: 'student', username: 'Ninja Student' } // default role so app doesn't crash
-          }));
+            console.error("Invalid token", error);
+            localStorage.removeItem('token');
         }
-      } else {
-        // User is signed out
-        dispatch(setUser(null));
-      }
-    });
-
-    return () => unsubscribe();
+    }
+    dispatch(setLoading(false));
   }, [dispatch]);
+
+
+  if (loading) {
+     return <NinjaLoader />;
+  }
+
 
   return (
     <>
-      <Routes>
-        <Route path="/" element={<HomePage />} />
-        
-        {/* Auth Routes */}
-        <Route path="/auth/login" element={<LoginPage />} />
-        <Route path="/auth/signup" element={<SignupPage />} />
-        <Route path="/auth/forgot-password" element={<ForgotPasswordPage />} />
-        <Route path="/auth/reset-password" element={<ResetPasswordPage />} />
-        <Route path="/auth/verify-email" element={<VerifyEmailPage />} />
-        <Route path="/auth/admin" element={<AdminLoginPage />} />
-        <Route path="/auth/admin/signup" element={<AdminSignupPage />} />
-        <Route path="/admin/dashboard" element={<AdminDashboard />} />
-
-        <Route path="/dashboard" element={<DashboardPage />} />
-        <Route path="/about" element={<AboutPage />} />
-        <Route path="/profile" element={<ProfilePage />} />
-        <Route path="/settings" element={<SettingsPage />} />
-        <Route path="/tools" element={<ToolsHub />} />
-        <Route path="/tools/:toolId" element={<ToolView />} />
-        <Route path="/funzone" element={<FunzoneHub />} />
-        <Route path="/funzone/:gameId" element={<GameView />} />
-        <Route path="/journal" element={<JournalHub />} />
-        <Route path="/journal/:entryId" element={<JournalEntry />} />
-        <Route path="/streaks" element={<StreaksPage />} />
-        <Route path="/rewards" element={<RewardsPage />} />
-        <Route path="/leaderboards" element={<LeaderboardsHub />} />
-        <Route path="/contact" element={<ContactUs />} />
-        <Route path="/chatbot" element={<ChatbotPage />} />
-      </Routes>
-      <GlobalNinjaGuide />
-      <FloatingChatbotIcon />
+        <Routes>
+            <Route path="/" element={<Homepage />} />
+            <Route path="/login" element={<LoginPage />} />
+            <Route path="/signup" element={<SignupPage />} />
+            <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+            <Route path="/reset-password" element={<ResetPasswordPage />} />
+            <Route path="/verify-email" element={<VerifyEmailPage />} />
+            <Route path="/contact" element={<ContactUs />} />
+            <Route path="/about" element={<AboutPage />} />
+            {/* Protected User Routes */}
+            <Route path="/dashboard" element={<DashboardPage />} />
+            <Route path="/settings" element={<SettingsPage />} />
+            {/* Tools & Funzone */}
+            <Route path="/tools" element={<ToolsHub />} />
+            <Route path="/tools/:toolId" element={<ToolView />} />
+            <Route path="/funzone" element={<FunzoneHub />} />
+            <Route path="/funzone/:gameId" element={<GameView />} />
+            <Route path="/chatbot" element={<ChatbotPage />} />
+            <Route path="/journal" element={<JournalHub />} />
+            <Route path="/streaks" element={<StreaksPage />} />
+            <Route path="/rewards" element={<RewardsPage />} />
+            <Route path="/leaderboards" element={<LeaderboardsHub />} />
+            <Route path="/hub/contact" element={<ContactUs />} />
+            <Route path="/HomePage" element={<Homepage />} />
+            {/* Admin Routes */}
+            <Route path="/admin/login" element={<AdminLoginPage />} />
+            <Route path="/admin/signup" element={<AdminSignupPage />} />
+            <Route path="/admin/dashboard" element={user && user.data?.role === 'admin' ? <AdminDashboard /> : <Navigate to="/admin/login" />} />
+            {/* Fallback */}
+            <Route path="*" element={<Navigate to="/" />} />
+        </Routes>
+        <ChatbotFloatingIcon />
     </>
-  )
+  );
 }
 
 export default App;

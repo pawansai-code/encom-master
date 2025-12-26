@@ -1,6 +1,4 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { child, ref as databaseRef, get, push, remove, update } from 'firebase/database';
-import { auth, database } from '../../firebase';
 
 const API_URL = 'http://localhost:8000/api/chat'; // Adjust based on actual backend port
 
@@ -25,12 +23,6 @@ export const sendMessageToBot = createAsyncThunk(
     'chat/sendMessage',
     async ({ message, conversationId }, { rejectWithValue, getState }) => {
         try {
-            const user = auth.currentUser;
-            if (!user) throw new Error("User not authenticated");
-
-            // 1. Optimistic update is handled by the component or a separate action, 
-            // but here we just focus on the API call and response.
-
             // 2. Call Backend for Bot Response
             const response = await fetch(API_URL, {
                 method: 'POST',
@@ -55,9 +47,9 @@ export const sendMessageToBot = createAsyncThunk(
             const data = await response.json();
             const botReply = data.answer;
 
-            // 3. Save to Firebase (User Message + Bot Reply)
+            // 3. Save to Firebase (User Message + Bot Reply) - REMOVED
+            // Instead we just return the bot message to update the local state.
             const timestamp = Date.now();
-            const userMsgObj = { sender: 'user', text: message, timestamp };
             const botMsgObj = { sender: 'bot', text: botReply, timestamp: Date.now() };
 
             let chatId = conversationId;
@@ -67,28 +59,6 @@ export const sendMessageToBot = createAsyncThunk(
             if (!chatId) {
                 isNewChat = true;
                 chatId = `chat_${timestamp} `;
-            }
-
-            const chatRef = databaseRef(database, `users / ${user.uid} /chat/history / ${chatId}/messages`);
-
-            await push(chatRef, userMsgObj);
-            await push(chatRef, botMsgObj);
-
-            // If new chat, also save metadata
-            if (isNewChat) {
-                const metaRef = databaseRef(database, `users/${user.uid}/chat/history/${chatId}`);
-                await update(metaRef, {
-                    title: message.substring(0, 30) + (message.length > 30 ? '...' : ''),
-                    date: timestamp,
-                    lastMessage: botReply
-                });
-            } else {
-                // Update last activity/message
-                const metaRef = databaseRef(database, `users/${user.uid}/chat/history/${chatId}`);
-                await update(metaRef, {
-                    lastMessage: botReply,
-                    date: timestamp
-                });
             }
 
             return { botMsg: botMsgObj, chatId: isNewChat ? chatId : null }; // Return new ID if created
@@ -104,21 +74,7 @@ export const fetchChatHistory = createAsyncThunk(
     'chat/fetchHistory',
     async (_, { rejectWithValue }) => {
         try {
-            const user = auth.currentUser;
-            if (!user) throw new Error("User not authenticated");
-
-            const dbRef = databaseRef(database);
-            const snapshot = await get(child(dbRef, `users/${user.uid}/chat/history`));
-
-            if (snapshot.exists()) {
-                const data = snapshot.val();
-                // Transform object to array
-                const historyList = Object.keys(data).map(key => ({
-                    id: key,
-                    ...data[key] // Should contain title, lastMessage, date, etc.
-                }));
-                return historyList;
-            }
+            // Mock Fetch History
             return [];
         } catch (error) {
             return rejectWithValue(error.message);
@@ -131,10 +87,7 @@ export const updateChatSettings = createAsyncThunk(
     'chat/updateSettings',
     async (newSettings, { rejectWithValue }) => {
         try {
-            const user = auth.currentUser;
-            if (!user) throw new Error("User not authenticated");
-
-            await update(databaseRef(database, `users/${user.uid}/chat/settings`), newSettings);
+            // Mock Update Settings
             return newSettings;
         } catch (error) {
             return rejectWithValue(error.message);
@@ -147,15 +100,7 @@ export const fetchChatSettings = createAsyncThunk(
     'chat/fetchSettings',
     async (_, { rejectWithValue }) => {
         try {
-            const user = auth.currentUser;
-            if (!user) throw new Error("User not authenticated");
-
-            const dbRef = databaseRef(database);
-            const snapshot = await get(child(dbRef, `users/${user.uid}/chat/settings`));
-
-            if (snapshot.exists()) {
-                return snapshot.val();
-            }
+            // Mock Fetch Settings
             return initialState.settings; // Default
         } catch (error) {
             return rejectWithValue(error.message);
@@ -168,13 +113,7 @@ export const deleteChatHistory = createAsyncThunk(
     'chat/deleteHistory',
     async (_, { rejectWithValue }) => {
         try {
-            const user = auth.currentUser;
-            if (!user) throw new Error("User not authenticated");
-
-            // Delete all chats
-            await remove(databaseRef(database, `users/${user.uid}/chat/history`));
-            await remove(databaseRef(database, `users/${user.uid}/chat/current_session`));
-
+            // Mock Delete
             return;
         } catch (error) {
             return rejectWithValue(error.message);

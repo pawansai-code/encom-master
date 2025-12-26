@@ -1,8 +1,3 @@
-import {
-    getAuth,
-    RecaptchaVerifier,
-    signInWithPhoneNumber
-} from 'firebase/auth';
 import { useState } from 'react';
 import { FaArrowLeft, FaCheck, FaPhone } from 'react-icons/fa';
 import { useDispatch } from 'react-redux';
@@ -19,18 +14,12 @@ const PhoneLoginForm = ({ onBack }) => {
     
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const auth = getAuth();
 
     const setupRecaptcha = () => {
-        if (!window.recaptchaVerifier) {
-            window.recaptchaVerifier = new RecaptchaVerifier(auth, 'recaptcha-container', {
-                'size': 'invisible',
-                'callback': (response) => {
-                    // reCAPTCHA solved, allow signInWithPhoneNumber.
-                    handleSendOtp();
-                }
-            });
-        }
+        // Mock Recaptcha
+        window.recaptchaVerifier = {
+             clear: () => {}
+        };
     };
 
     const handleSendOtp = async (e) => {
@@ -38,22 +27,29 @@ const PhoneLoginForm = ({ onBack }) => {
         setError('');
         setLoading(true);
         
-        setupRecaptcha();
-        const appVerifier = window.recaptchaVerifier;
-
         try {
-            // Format phone number logic could go here (e.g. ensure +CountryCode)
-            // For now assuming user types full formatted number
-            const confirmation = await signInWithPhoneNumber(auth, phoneNumber, appVerifier);
-            window.confirmationResult = confirmation;
-            setConfirmationResult(confirmation);
+            // Mock OTP Sending
+             setConfirmationResult({
+                confirm: async (code) => {
+                    if (code === '123456') {
+                        return {
+                            user: {
+                                uid: 'mock-phone-uid',
+                                phoneNumber: phoneNumber,
+                                photoURL: null
+                            }
+                        }
+                    } else {
+                        throw new Error("Invalid Code");
+                    }
+                }
+            });
             setShowOtpInput(true);
             setLoading(false);
         } catch (err) {
             console.error(err);
-            setError('Failed to send SMS. invalid format? (Use +1...)');
+            setError('Failed to send SMS.');
             setLoading(false);
-            if(window.recaptchaVerifier) window.recaptchaVerifier.clear();
         }
     };
 
@@ -68,15 +64,15 @@ const PhoneLoginForm = ({ onBack }) => {
             
             dispatch(setUser({
                 uid: user.uid,
-                email: user.providerData[0]?.email || 'phone user', // Phone auth email is often null
-                name: user.displayName || 'Mobile Ninja',
+                email: 'phone-user@eduverse.com', // Phone auth email is often null
+                name: 'Mobile Ninja',
                 photoURL: user.photoURL,
                 phoneNumber: user.phoneNumber
             }));
 
             navigate('/dashboard');
         } catch (err) {
-            setError('Invalid Code. Please try again.');
+            setError('Invalid Code. Please try again (Use 123456).');
             setLoading(false);
         }
     };

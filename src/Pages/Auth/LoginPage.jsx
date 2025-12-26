@@ -75,16 +75,16 @@ const LoginPage = () => {
 
             <div className="auth-links">
                 <span>
-                    New here? <Link to="/auth/signup" className="auth-link">Join the Clan</Link>
+                    New here? <Link to="/signup" className="auth-link">Join the Clan</Link>
                 </span>
-                <Link to="/auth/forgot-password" className="auth-link">Lost Secrets?</Link>
+                <Link to="/forgot-password" className="auth-link">Lost Secrets?</Link>
             </div>
             
             {/* Social Login Section */}
             <SocialButtons onPhoneClick={() => setUsePhoneLogin(true)} />
 
             <div className="text-center mt-3">
-                 <Link to="/auth/admin" className="text-secondary small text-decoration-none">Admin Portal</Link>
+                 <Link to="/admin/login" className="text-secondary small text-decoration-none">Admin Portal</Link>
             </div>
         </AuthLayout>
     );

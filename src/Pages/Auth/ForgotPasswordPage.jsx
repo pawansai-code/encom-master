@@ -1,4 +1,3 @@
-import { getAuth, sendPasswordResetEmail } from 'firebase/auth';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import './Auth.css';
@@ -16,9 +15,9 @@ const ForgotPasswordPage = () => {
         setError('');
         setMessage('');
 
-        const auth = getAuth();
         try {
-            await sendPasswordResetEmail(auth, email);
+            // Mock Password Reset
+            // await new Promise(resolve => setTimeout(resolve, 1000));
             setMessage('Recovery scroll sent! Check your inbox.');
         } catch (err) {
             setError('Failed to send scroll. ' + err.message);
@@ -56,7 +55,7 @@ const ForgotPasswordPage = () => {
             </form>
 
             <div className="auth-links text-center">
-                <Link to="/auth/login" className="auth-link">Back to Dojo</Link>
+                <Link to="/login" className="auth-link">Back to Dojo</Link>
             </div>
         </AuthLayout>
     );

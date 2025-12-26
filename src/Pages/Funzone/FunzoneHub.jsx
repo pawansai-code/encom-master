@@ -118,18 +118,18 @@ const FunzoneHub = () => {
                                     className="game-difficulty" 
                                     style={{ color: getDifficultyColor(game.difficulty), borderColor: getDifficultyColor(game.difficulty) }}
                                 >
-                                    {game.difficulty}
+                                    {game.difficulty || 'Medium'}
                                 </span>
                                 
                                 <div 
                                     className="game-icon-wrapper"
                                     style={{ color: game.accentColor }}
                                 >
-                                    <game.icon />
+                                    {game.icon ? <game.icon /> : <FaGamepad />}
                                 </div>
                                 <h3 className="fw-bold mb-1 text-light">{game.name}</h3>
                                 <p className="text-secondary small mb-3">{game.category}</p>
-                                <p className="text-secondary opacity-75 small mb-0">{game.description}</p>
+                                <p className="text-secondary opacity-75 small mb-0">{game.description || 'Experience this amazing game!'}</p>
                                 
                                 <div className="mt-auto pt-3 d-flex align-items-center text-warning small">
                                     <FaTrophy className="me-2" />

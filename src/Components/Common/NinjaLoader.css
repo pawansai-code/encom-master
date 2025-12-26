@@ -1,0 +1,57 @@
+.ninja-loader-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    width: 100%;
+    background-color: #0f0f0f;
+    /* Dark background matches theme */
+    z-index: 9999;
+    position: fixed;
+    top: 0;
+    left: 0;
+}
+
+.ninja-blade-wrapper {
+    animation: spin-blade 0.8s linear infinite;
+    filter: drop-shadow(0 0 10px rgba(0, 212, 255, 0.6));
+}
+
+.ninja-loading-text {
+    margin-top: 20px;
+    color: #ffffff;
+    font-family: 'Orbitron', sans-serif;
+    /* Or app's main font */
+    font-size: 1.2rem;
+    letter-spacing: 2px;
+    animation: pulse-text 1.5s ease-in-out infinite;
+    opacity: 0.8;
+}
+
+@keyframes spin-blade {
+    0% {
+        transform: rotate(0deg) scale(1);
+    }
+
+    50% {
+        transform: rotate(180deg) scale(1.1);
+    }
+
+    100% {
+        transform: rotate(360deg) scale(1);
+    }
+}
+
+@keyframes pulse-text {
+
+    0%,
+    100% {
+        opacity: 0.5;
+    }
+
+    50% {
+        opacity: 1;
+        text-shadow: 0 0 8px rgba(0, 212, 255, 0.8);
+    }
+}

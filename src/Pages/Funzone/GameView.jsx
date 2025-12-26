@@ -1,8 +1,9 @@
 import { useEffect } from 'react';
 import { FaChevronLeft, FaInfoCircle, FaTrophy } from 'react-icons/fa';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link, useParams } from 'react-router-dom';
 import HomeNavbar from '../../Components/Homepage/HomeNavbar';
+import { updateActivity } from '../../State/slices/userSlice';
 import { ChessLite } from './components/ChessLite';
 import { CodeBreaker } from './components/CodeBreaker';
 import { MemoryGame, PlaceholderGame, TicTacToeGame, TypingGame } from './components/GameComponents';
@@ -11,16 +12,32 @@ import { GAMES_CONFIG } from './gamesConfig';
 import './styles/Funzone.css';
 
 const GameView = () => {
+    const dispatch = useDispatch();
     const { gameId } = useParams();
+
     const game = GAMES_CONFIG.find(g => g.id === gameId);
     // Use a stable selector or handle default value outside to prevent infinite re-render loops/warnings
     const rawLeaderboards = useSelector(state => state.games.leaderboards[gameId]);
     const leaderboards = rawLeaderboards || [];
     
-    // Scroll to top on load
+    // Scroll to top on load and Log Activity
     useEffect(() => {
         window.scrollTo(0, 0);
-    }, [gameId]);
+
+        if (game) {
+            // Log activity to backend (Earn XP!)
+            // Debounce or ensure we only log once per session? 
+            // For now, logging on "View" is acceptable for "Play" credit, 
+            // but ideally we hook into "Game Over" events.
+            // Let's log a small "participation" amount.
+            dispatch(updateActivity({
+                type: 'game_play',
+                gameId: gameId,
+                xpEarned: 10, // 10 XP for starting a game
+                description: `Played ${game.name}`
+            }));
+        }
+    }, [gameId, dispatch, game]);
 
     if (!game) {
         return <div className="text-white text-center py-5">Game not found.</div>;

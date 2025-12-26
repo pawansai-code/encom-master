@@ -91,7 +91,7 @@ const AdminLoginPage = () => {
 
             <div className="auth-links text-center">
                 <span>
-                    New Sensei? <Link to="/auth/admin/signup" className="auth-link" style={{color: '#ff6b6b'}}>Initiate</Link>
+                    New Sensei? <Link to="/admin/signup" className="auth-link" style={{color: '#ff6b6b'}}>Initiate</Link>
                 </span>
             </div>
         </AuthLayout>

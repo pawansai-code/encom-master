@@ -1,8 +1,4 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { addDoc, collection, deleteDoc, doc, getDocs, getFirestore, orderBy, query, updateDoc } from 'firebase/firestore';
-import app from '../../firebase';
-
-const db = getFirestore(app);
 
 // Async Thunks
 
@@ -11,15 +7,11 @@ export const fetchAnnouncements = createAsyncThunk(
     'announcements/fetchAnnouncements',
     async (_, { rejectWithValue }) => {
         try {
-            const announcementsRef = collection(db, 'announcements');
-            const q = query(announcementsRef, orderBy('date', 'desc'));
-            const querySnapshot = await getDocs(q);
-
-            const announcements = [];
-            querySnapshot.forEach((doc) => {
-                announcements.push({ id: doc.id, ...doc.data() });
-            });
-            return announcements;
+            // Mock Fetch
+            return [
+                { id: '1', title: 'Welcome to Eduverse', description: 'Welcome to our platform!', category: 'System', date: new Date().toISOString() },
+                { id: '2', title: 'New Feature', description: 'Check out the new Funzone!', category: 'Update', date: new Date().toISOString() }
+            ];
         } catch (error) {
             return rejectWithValue(error.message);
         }
@@ -31,11 +23,7 @@ export const addAnnouncement = createAsyncThunk(
     'announcements/addAnnouncement',
     async (announcementData, { rejectWithValue }) => {
         try {
-            const docRef = await addDoc(collection(db, 'announcements'), {
-                ...announcementData,
-                date: new Date().toISOString() // Store as ISO string for sorting
-            });
-            return { id: docRef.id, ...announcementData, date: new Date().toISOString() };
+            return { id: 'mock-announcement-' + Date.now(), ...announcementData, date: new Date().toISOString() };
         } catch (error) {
             return rejectWithValue(error.message);
         }
@@ -47,7 +35,6 @@ export const deleteAnnouncement = createAsyncThunk(
     'announcements/deleteAnnouncement',
     async (id, { rejectWithValue }) => {
         try {
-            await deleteDoc(doc(db, 'announcements', id));
             return id;
         } catch (error) {
             return rejectWithValue(error.message);
@@ -60,8 +47,6 @@ export const updateAnnouncement = createAsyncThunk(
     'announcements/updateAnnouncement',
     async ({ id, data }, { rejectWithValue }) => {
         try {
-            const docRef = doc(db, 'announcements', id);
-            await updateDoc(docRef, data);
             return { id, ...data };
         } catch (error) {
             return rejectWithValue(error.message);

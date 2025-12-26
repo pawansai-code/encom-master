@@ -121,8 +121,8 @@ const Announcements = () => {
                             </div>
                             <div className="announcement-content">
                                 <div className="d-flex align-items-center gap-3 mb-2">
-                                    <span className={`badge-category category-${item.category.toLowerCase()}`}>
-                                        {item.category}
+                                    <span className={`badge-category category-${item.category?.toLowerCase() || 'update'}`}>
+                                        {item.category || 'Update'}
                                     </span>
                                     <h4 className="announcement-title mb-0">{item.title}</h4>
                                 </div>

@@ -116,14 +116,14 @@ const SignupPage = () => {
 
             <div className="auth-links text-center">
                 <span>
-                    Already a Ninja? <Link to="/auth/login" className="auth-link">Enter Dojo</Link>
+                    Already a Ninja? <Link to="/login" className="auth-link">Enter Dojo</Link>
                 </span>
             </div>
 
             <SocialButtons onPhoneClick={() => {
                 // Navigate to login with phone mode active? 
                 // Alternatively, just redirect to login since phone auth manages both login/signup usually
-                window.location.href = '/auth/login'; 
+                window.location.href = '/login'; 
             }} />
         </AuthLayout>
     );

@@ -26,8 +26,8 @@ export const ScientificCalculatorTool = () => {
                     .replace(/e/g, 'Math.E')
                     .replace(/\^/g, '**');
 
-                // eslint-disable-next-line no-eval
-                const result = eval(expression);
+                // eslint-disable-next-line no-new-func
+                const result = new Function('return ' + expression)();
                 setDisplay(String(result));
             } catch (err) {
                 setDisplay('Error');
@@ -79,8 +79,8 @@ export const CalculatorTool = () => {
         if (value === 'C') setDisplay('');
         else if (value === '=') {
             try {
-                // eslint-disable-next-line no-eval
-                setDisplay(eval(display).toString());
+                // eslint-disable-next-line no-new-func
+                setDisplay(new Function('return ' + display)().toString());
             } catch {
                 setDisplay('Error');
             }

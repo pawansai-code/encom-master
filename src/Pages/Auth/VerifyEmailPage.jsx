@@ -24,7 +24,7 @@ const VerifyEmailPage = () => {
                     Resend Verification Scroll
                 </button>
                 
-                <Link to="/auth/login" className="auth-link">
+                <Link to="/login" className="auth-link">
                     Return to Login
                 </Link>
             </div>

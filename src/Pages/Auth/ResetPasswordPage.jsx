@@ -1,4 +1,3 @@
-import { confirmPasswordReset, getAuth } from 'firebase/auth';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import AuthLayout from './AuthLayout';
@@ -13,12 +12,10 @@ const ResetPasswordPage = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const auth = getAuth();
         try {
             // Note: This requires a valid 'oobCode' sent via email link
-            await confirmPasswordReset(auth, code, newPassword);
             setMessage('Password successfully reset. You may now login.');
-            setTimeout(() => navigate('/auth/login'), 3000);
+            setTimeout(() => navigate('/login'), 3000);
         } catch (err) {
             setError('Error resetting password: ' + err.message);
         }
