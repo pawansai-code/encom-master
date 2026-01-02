@@ -3,7 +3,7 @@ import { FaBookOpen, FaPlus, FaSearch } from 'react-icons/fa';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import HomeNavbar from '../../Components/Homepage/HomeNavbar';
-import { HabitTracker, HeatmapCalendar, TodoManager } from './components/JournalComponents';
+import { HabitTracker, TodoManager } from './components/JournalComponents';
 import './styles/Journal.css';
 
 const JournalHub = () => {
@@ -128,7 +128,7 @@ const JournalHub = () => {
 
                     {/* Right Column: Widgets */}
                     <div className="col-lg-4 d-flex flex-column gap-4 fade-in-up" style={{ animationDelay: '0.1s' }}>
-                        <HeatmapCalendar onDateClick={handleDateClick} selectedDate={selectedDate} />
+
                         <TodoManager />
                         <HabitTracker />
                     </div>

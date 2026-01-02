@@ -6,6 +6,7 @@ import ChatbotFloatingIcon from './Components/Common/ChatbotFloatingIcon';
 import NinjaLoader from './Components/Common/NinjaLoader';
 import { setLoading, setUser } from './State/slices/userSlice';
 
+import MessageComponent from './Components/MessageComponent';
 
 
 import AboutPage from './Pages/About/AboutPage';
@@ -24,7 +25,7 @@ import GameView from './Pages/Funzone/GameView';
 import Homepage from './Pages/Homepage/Homepage';
 import JournalHub from './Pages/Journal/JournalHub';
 import SettingsPage from './Pages/Settings/SettingsPage';
-import StreaksPage from './Pages/Streaks/StreaksPage';
+
 // Additional Features
 import ToolsHub from './Pages/Tools/ToolsHub';
 import ToolView from './Pages/Tools/ToolView';
@@ -97,7 +98,7 @@ function App() {
             <Route path="/funzone/:gameId" element={<GameView />} />
             <Route path="/chatbot" element={<ChatbotPage />} />
             <Route path="/journal" element={<JournalHub />} />
-            <Route path="/streaks" element={<StreaksPage />} />
+
             <Route path="/rewards" element={<RewardsPage />} />
             <Route path="/leaderboards" element={<LeaderboardsHub />} />
             <Route path="/hub/contact" element={<ContactUs />} />
@@ -110,6 +111,11 @@ function App() {
             <Route path="*" element={<Navigate to="/" />} />
         </Routes>
         <ChatbotFloatingIcon />
+
+        {/* Display backend message */}
+          <div style={{ textAlign: "center", margin: "20px 0" }}>
+            <MessageComponent />
+          </div>
     </>
   );
 }

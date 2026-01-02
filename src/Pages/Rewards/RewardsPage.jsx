@@ -1,5 +1,5 @@
 import { FaCoins, FaCrown, FaStar, FaTrophy, FaUserNinja } from 'react-icons/fa';
-import { GiRibbonMedal, GiTwoCoins } from 'react-icons/gi';
+import { GiTwoCoins } from 'react-icons/gi';
 import { useSelector } from 'react-redux';
 import HomeNavbar from '../../Components/Homepage/HomeNavbar';
 import { selectRewards } from '../../State/slices/rewardsSlice';
@@ -12,10 +12,7 @@ const RewardsPage = () => {
     // Fallback if userSlice doesn't have name/avatar yet
     const user = useSelector(selectUser) || { name: 'Student', avatar: null };
 
-    const getProgressWidth = () => {
-        if (!rewards || !rewards.nextLevelXp) return 0;
-        return (rewards.xp / rewards.nextLevelXp) * 100;
-    };
+
 
     if (!rewards) {
         return (
@@ -38,25 +35,7 @@ const RewardsPage = () => {
                 </header>
 
                 <div className="rewards-grid">
-                    {/* XP & Level Progress Section */}
-                    <div className="rewards-card progress-section">
-                        <div className="card-header border-0 pb-0">
-                            <div className="card-title">
-                                <FaStar className="text-warning" /> Level {rewards.level} Progress
-                            </div>
-                            <div className="level-badge">Lvl {rewards.level}</div>
-                        </div>
-                        <div className="xp-bar-container">
-                            <div 
-                                className="xp-bar-fill" 
-                                style={{ width: `${getProgressWidth()}%` }}
-                            ></div>
-                        </div>
-                        <div className="xp-text">
-                            <span>{rewards.xp} XP</span>
-                            <span>{rewards.nextLevelXp} XP to next level</span>
-                        </div>
-                    </div>
+
 
                     {/* Wallet Section: Coins & Points */}
                     <div className="rewards-card wallet-section">
@@ -108,21 +87,7 @@ const RewardsPage = () => {
                         </div>
                     </div>
 
-                    {/* Medals Gallery */}
-                    <div className="rewards-card medals-section">
-                        <div className="card-header">
-                            <span className="card-title"><GiRibbonMedal /> Medals Gallery</span>
-                        </div>
-                        <div className="medals-display">
-                            {rewards.medals.map(medal => (
-                                <div key={medal.id} className="medal-spot">
-                                    <div className="medal-icon">{medal.icon}</div>
-                                    <div className="medal-count">{medal.count}</div>
-                                    <div className="mt-2 small fw-bold text-secondary">{medal.name}</div>
-                                </div>
-                            ))}
-                        </div>
-                    </div>
+
 
                     {/* Titles Page */}
                     <div className="rewards-card titles-section">

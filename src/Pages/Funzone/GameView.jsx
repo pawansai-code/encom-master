@@ -7,6 +7,8 @@ import { updateActivity } from '../../State/slices/userSlice';
 import { ChessLite } from './components/ChessLite';
 import { CodeBreaker } from './components/CodeBreaker';
 import { MemoryGame, PlaceholderGame, TicTacToeGame, TypingGame } from './components/GameComponents';
+import { GeometryDashGame } from './components/GeometryDashGame';
+import { HangmanGame } from './components/HangmanGame';
 import { SnakeGame } from './components/SnakeGame';
 import { GAMES_CONFIG } from './gamesConfig';
 import './styles/Funzone.css';
@@ -51,6 +53,8 @@ const GameView = () => {
             case 'snake': return <SnakeGame />;
             case 'chess-lite': return <ChessLite />;
             case 'code-breaker': return <CodeBreaker />;
+            case 'hangman': return <HangmanGame />;
+            case 'geometry-dash': return <GeometryDashGame />;
             default: return <PlaceholderGame name={game.name} />;
         }
     };
@@ -139,6 +143,8 @@ const GameView = () => {
                                 {gameId === 'memory' ? "Find all matching pairs with fewer moves to get a higher score!" :
                                  gameId === 'typing' ? "Type the words as fast as you can. Don't make mistakes!" :
                                  gameId === 'tic-tac-toe' ? "Get 3 in a row to win against the AI." :
+                                 gameId === 'hangman' ? "Guess the hidden word letter by letter before you run out of attempts." :
+                                 gameId === 'geometry-dash' ? "Tap or Space to jump over obstacles. Don't crash!" :
                                  "Follow the on-screen instructions to win."}
                             </p>
                         </div>

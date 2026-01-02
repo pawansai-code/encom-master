@@ -21,10 +21,11 @@ const FunzoneHub = () => {
     }, [status, dispatch]);
 
     // Merge fetched DB data with local config for Icons/Paths (since functions/components can't be stored in DB)
-    const displayGames = fetchedGames.length > 0 ? fetchedGames.map(dbGame => {
-        const localConfig = GAMES_CONFIG.find(g => g.id === dbGame.id) || {};
-        return { ...localConfig, ...dbGame }; // DB data overrides local (e.g. status, plays)
-    }) : GAMES_CONFIG; // Fallback if DB not ready
+    // Use local config as the source of truth for available games, merge with DB data if available
+    const displayGames = GAMES_CONFIG.map(localGame => {
+        const dbGame = fetchedGames.find(g => g.id === localGame.id) || {};
+        return { ...localGame, ...dbGame };
+    });
 
     const categories = ['All', ...new Set(displayGames.map(game => game.category))];
 

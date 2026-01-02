@@ -1,6 +1,8 @@
-import { FaBolt, FaBookOpen, FaFire, FaGamepad, FaStar, FaTools, FaTrophy, FaUserEdit } from 'react-icons/fa';
+import { FaBolt, FaBookOpen, FaGamepad, FaTools, FaTrophy, FaUserEdit } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 import HomeNavbar from '../../Components/Homepage/HomeNavbar'; // Or specific Dashboard Navbar
+import { HeatmapCalendar } from '../Journal/components/JournalComponents';
+import '../Journal/styles/Journal.css';
 import './styles/Dashboard.css';
 
 import { useSelector } from 'react-redux';
@@ -44,47 +46,7 @@ const DashboardPage = () => {
                     </div>
                 </div>
 
-                {/* Stats Overview */}
-                <div className="row g-4 mb-5 fade-in-up" style={{ animationDelay: '0.1s' }}>
-                    <div className="col-md-4">
-                        <div className="stat-card d-flex align-items-center gap-3">
-                            <div className="stat-icon bg-fire">
-                                <FaFire />
-                            </div>
-                            <div>
-                                <h3 className="mb-0 fw-bold">{user.streak} Days</h3>
-                                <p className="mb-0 text-secondary small">Daily Streak</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="col-md-4">
-                        <div className="stat-card d-flex align-items-center gap-3">
-                            <div className="stat-icon bg-xp">
-                                <FaStar />
-                            </div>
-                            <div className="w-100">
-                                <div className="d-flex justify-content-between align-items-end mb-1">
-                                    <h3 className="mb-0 fw-bold">{user.xp} XP</h3>
-                                    <small className="text-secondary">{user.nextLevelXp - user.xp} to Level {user.level + 1}</small>
-                                </div>
-                                <div className="progress" style={{ height: '6px', backgroundColor: 'rgba(255,255,255,0.1)' }}>
-                                    <div className="progress-bar bg-warning" role="progressbar" style={{ width: `${(user.xp / user.nextLevelXp) * 100}%` }}></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="col-md-4">
-                        <div className="stat-card d-flex align-items-center gap-3">
-                            <div className="stat-icon bg-rank">
-                                <FaTrophy />
-                            </div>
-                            <div>
-                                <h3 className="mb-0 fw-bold">{user.rank}</h3>
-                                <p className="mb-0 text-secondary small">Current Rank (Lvl {user.level})</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+
 
                 <div className="row g-4 fade-in-up" style={{ animationDelay: '0.2s' }}>
                     {/* Quick Actions / Hub */}
@@ -151,29 +113,8 @@ const DashboardPage = () => {
                             </div>
                         </div>
 
-                        {/* Activity Log */}
-                        <div className="stat-card flex-grow-1">
-                            <div className="d-flex justify-content-between align-items-center mb-4">
-                                <h5 className="fw-bold mb-0">Activity Log</h5>
-                                <button className="btn btn-sm btn-link text-secondary text-decoration-none">View All</button>
-                            </div>
-                            <div className="activity-list">
-                                {recentActivity.map(activity => (
-                                    <div key={activity.id} className="activity-item d-flex gap-3">
-                                        <div className="mt-1">
-                                            <div style={{ width: '8px', height: '8px', borderRadius: '50%', background: 'var(--accent-purple)' }}></div>
-                                        </div>
-                                        <div>
-                                            <p className="mb-1 small fw-semibold ">{activity.text}</p>
-                                            <small className="text-secondary opacity-75">{activity.time}</small>
-                                        </div>
-                                        {activity.xp && (
-                                            <div className="ms-auto text-warning small fw-bold">{activity.xp}</div>
-                                        )}
-                                    </div>
-                                ))}
-                            </div>
-                        </div>
+                        {/* Activity Log Moved from Journal */}
+                        <HeatmapCalendar />
                     </div>
                 </div>
             </div>

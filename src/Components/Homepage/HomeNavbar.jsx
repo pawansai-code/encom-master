@@ -46,7 +46,6 @@ const HomeNavbar = () => {
             type: 'dropdown',
             items: [
                 { name: 'Dashboard', path: '/dashboard', type: 'route' },
-                { name: 'Progress Tracker', path: '/streaks', type: 'route' },
                 { name: 'Achievements', path: '/leaderboards', type: 'route' }
             ]
         }

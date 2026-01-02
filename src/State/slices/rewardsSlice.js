@@ -20,11 +20,7 @@ const initialState = {
         { id: 5, name: 'Helper', description: 'Helped a peer', type: 'girls', icon: '💖', unlocked: true },
         { id: 6, name: 'Star Student', description: 'Top of the class', type: 'girls', icon: '🌟', unlocked: false },
     ],
-    medals: [
-        { id: 1, name: 'Gold Medal', count: 1, icon: '🥇' },
-        { id: 2, name: 'Silver Medal', count: 3, icon: '🥈' },
-        { id: 3, name: 'Bronze Medal', count: 5, icon: '🥉' },
-    ],
+
     history: [
         { id: 1, type: 'xp', amount: 100, reason: 'Completed Daily Challenge', date: '2025-12-12' },
         { id: 2, type: 'coin', amount: 50, reason: 'Logged in', date: '2025-12-12' },

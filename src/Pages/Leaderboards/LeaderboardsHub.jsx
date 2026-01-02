@@ -1,15 +1,12 @@
 import React, { useEffect } from 'react';
 import {
-    FaBook,
-    FaCalendarAlt, FaCrown,
+    FaCrown,
     FaFire,
-    FaGamepad, FaMedal,
-    FaStar,
+    FaMedal,
     FaTools,
     FaTrophy,
     FaUsers
 } from 'react-icons/fa';
-import { GiRibbonMedal } from 'react-icons/gi';
 import { useDispatch, useSelector } from 'react-redux';
 import { useSearchParams } from 'react-router-dom';
 import HomeNavbar from '../../Components/Homepage/HomeNavbar';
@@ -20,14 +17,9 @@ import './Leaderboards.css';
 const LEADERBOARD_CONFIG = [
     { id: 'overall', label: 'Overall', icon: <FaCrown />, description: 'Top ranking students across all activities', metric: 'XP' },
     { id: 'streak', label: 'Streak', icon: <FaFire />, description: 'Longest accumulated daily activity streaks', metric: 'Days' },
-    { id: 'xp', label: 'XP / Level', icon: <FaStar />, description: 'Most experienced ninja learners', metric: 'XP' },
-    { id: 'journal', label: 'Journal', icon: <FaBook />, description: 'Most consistent reflective writers', metric: 'Entries' },
     { id: 'tools', label: 'Tools Master', icon: <FaTools />, description: 'Most active users of productivity tools', metric: 'Uses' },
     { id: 'community', label: 'Community', icon: <FaUsers />, description: 'Top contributors to discussions and help', metric: 'Contribs' },
-    { id: 'funzone', label: 'Funzone Global', icon: <FaGamepad />, description: 'Highest scores across all games', metric: 'Score' },
     { id: 'badges', label: 'Badges', icon: <FaMedal />, description: 'Most badges collected', metric: 'Badges' },
-    { id: 'medals', label: 'Medals', icon: <GiRibbonMedal />, description: 'Most medals earned from challenges', metric: 'Medals' },
-    { id: 'seasonal', label: 'Seasonal', icon: <FaCalendarAlt />, description: 'Top performers this season', metric: 'Points' },
 ];
 
 const Podium = ({ topThree }) => {
@@ -171,12 +163,7 @@ const LeaderboardsHub = () => {
 
                 {/* Navigation Tabs */}
                 <div className="leaderboard-tabs">
-                    <button 
-                        className={`tab-btn ${currentTab === 'hub' ? 'active' : ''}`}
-                        onClick={() => handleTabChange('hub')}
-                    >
-                        Hub
-                    </button>
+
                     {LEADERBOARD_CONFIG.map(tab => (
                         <button 
                             key={tab.id}

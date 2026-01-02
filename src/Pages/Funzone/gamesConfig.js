@@ -5,7 +5,9 @@ import {
     FaGhost,
     FaKeyboard,
     FaQuestion,
-    FaTerminal
+    FaSquare,
+    FaTerminal,
+    FaUserSecret
 } from 'react-icons/fa';
 
 export const GAMES_CONFIG = [
@@ -78,5 +80,25 @@ export const GAMES_CONFIG = [
         category: 'Strategy',
         accentColor: '#F7FFF7',
         difficulty: 'Expert'
+    },
+    {
+        id: 'hangman',
+        name: 'Ninja Hangman',
+        description: 'Guess the secret word to save the ninja!',
+        icon: FaUserSecret,
+        path: '/funzone/hangman',
+        category: 'Word',
+        accentColor: '#E63946',
+        difficulty: 'Medium'
+    },
+    {
+        id: 'geometry-dash',
+        name: 'Neon Dash',
+        description: 'Jump through obstacles in this rhythm runner!',
+        icon: FaSquare,
+        path: '/funzone/geometry-dash',
+        category: 'Arcade',
+        accentColor: '#00F2FE',
+        difficulty: 'Hard'
     }
 ];
