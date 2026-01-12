@@ -73,12 +73,7 @@ const FunzoneHub = () => {
                                     onChange={(e) => setSearchTerm(e.target.value)}
                                 />
                             </div>
-                            <button 
-                                className="btn w-100 btn-outline-warning d-flex justify-content-center align-items-center gap-2 py-2"
-                                onClick={() => navigate('/leaderboards?tab=funzone')}
-                            >
-                                <FaTrophy /> View Funzone Leaderboard
-                            </button>
+{/* Leaderboard button removed */}
                         </div>
                     </div>
 

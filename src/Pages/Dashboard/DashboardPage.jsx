@@ -1,4 +1,4 @@
-import { FaBolt, FaBookOpen, FaGamepad, FaTools, FaTrophy, FaUserEdit } from 'react-icons/fa';
+import { FaBolt, FaBookOpen, FaGamepad, FaTools, FaUserEdit } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 import HomeNavbar from '../../Components/Homepage/HomeNavbar'; // Or specific Dashboard Navbar
 import { HeatmapCalendar } from '../Journal/components/JournalComponents';
@@ -98,20 +98,7 @@ const DashboardPage = () => {
                     <div className="col-lg-4 d-flex flex-column gap-4">
                         
                         {/* Compact Leaderboard Widget */}
-                        <div className="stat-card p-0 overflow-hidden text-center position-relative border-0 shadow-lg">
-                            <div className="lb-widget-bg"></div>
-                            <div className="p-4 position-relative z-1">
-                                <div className="mb-3 d-inline-block p-3 rounded-circle bg-dark bg-opacity-50 shadow-sm border border-white border-opacity-10">
-                                    <FaTrophy className="text-warning fs-1" />
-                                </div>
-                                <h3 className="fw-bold text-white mb-1">#42</h3>
-                                <p className="text-white-50 small mb-3">Global Rank • Top 5%</p>
-                                
-                                <Link to="/leaderboards" className="btn btn-primary w-100 rounded-pill fw-bold" style={{ background: 'var(--gradient-btn)', border: 'none' }}>
-                                    View Leaderboards
-                                </Link>
-                            </div>
-                        </div>
+{/* Leaderboard widget removed as requested */}
 
                         {/* Activity Log Moved from Journal */}
                         <HeatmapCalendar />

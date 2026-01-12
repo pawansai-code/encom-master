@@ -1,228 +1,90 @@
-import React, { useEffect } from 'react';
-import {
-    FaCrown,
-    FaFire,
-    FaMedal,
-    FaTools,
-    FaTrophy,
-    FaUsers
-} from 'react-icons/fa';
-import { useDispatch, useSelector } from 'react-redux';
+import { useState } from 'react';
+import { FaCrown, FaGamepad, FaMedal, FaTrophy, FaUserAstronaut } from 'react-icons/fa';
 import { useSearchParams } from 'react-router-dom';
 import HomeNavbar from '../../Components/Homepage/HomeNavbar';
-import { selectLeaderboard, setCategory } from '../../State/slices/leaderboardSlice';
-import './Leaderboards.css';
-
-// Configuration for all leaderboard types
-const LEADERBOARD_CONFIG = [
-    { id: 'overall', label: 'Overall', icon: <FaCrown />, description: 'Top ranking students across all activities', metric: 'XP' },
-    { id: 'streak', label: 'Streak', icon: <FaFire />, description: 'Longest accumulated daily activity streaks', metric: 'Days' },
-    { id: 'tools', label: 'Tools Master', icon: <FaTools />, description: 'Most active users of productivity tools', metric: 'Uses' },
-    { id: 'community', label: 'Community', icon: <FaUsers />, description: 'Top contributors to discussions and help', metric: 'Contribs' },
-    { id: 'badges', label: 'Badges', icon: <FaMedal />, description: 'Most badges collected', metric: 'Badges' },
-];
-
-const Podium = ({ topThree }) => {
-    if (!topThree || topThree.length === 0) return null;
-
-    // Ensure we have 3 slots even if data is missing, for layout stability (though mock data is full)
-    const [first, second, third] = [topThree[0], topThree[1], topThree[2]];
-
-    return (
-        <div className="podium-section">
-            <div className="podium-card rank-2">
-                <FaTrophy className="crown-icon" />
-                <img src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${second?.name}`} alt="Avatar" className="podium-avatar" />
-                <div className="podium-name">{second?.name || 'Empty'}</div>
-                <div className="podium-stat">{second?.value || 0}</div>
-            </div>
-            <div className="podium-card rank-1">
-                <FaCrown className="crown-icon" />
-                <img src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${first?.name}`} alt="Avatar" className="podium-avatar" />
-                <div className="podium-name">{first?.name || 'Empty'}</div>
-                <div className="podium-stat">{first?.value || 0}</div>
-            </div>
-            <div className="podium-card rank-3">
-                <FaMedal className="crown-icon" />
-                <img src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${third?.name}`} alt="Avatar" className="podium-avatar" />
-                <div className="podium-name">{third?.name || 'Empty'}</div>
-                <div className="podium-stat">{third?.value || 0}</div>
-            </div>
-        </div>
-    );
-};
-
-const LeaderboardTable = ({ data, metricLabel }) => {
-    return (
-        <div className="leaderboard-list">
-            <div className="list-header">
-                <span>Rank</span>
-                <span>User</span>
-                <span>{metricLabel}</span>
-                <span>Level</span>
-            </div>
-            {data.map((user) => (
-                <div key={user.id} className="list-item">
-                    <div className="rank-cell">
-                        #{user.rank}
-                        {user.change === 'up' ? (
-                            <span className="trend-up trend-icon">▲</span>
-                        ) : (
-                            <span className="trend-down trend-icon">▼</span>
-                        )}
-                    </div>
-                    <div className="user-cell">
-                        <div className="user-avatar-small">
-                            <img 
-                                src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${user.name}`} 
-                                alt="avatar" 
-                                style={{width: '100%', borderRadius: '50%'}}
-                            />
-                        </div>
-                        <div className="user-info">
-                            <span className="user-name">{user.name}</span>
-                            <span className="user-badge">Ninja Novice</span>
-                        </div>
-                    </div>
-                    <div className="stat-cell">
-                        {user.value}
-                    </div>
-                    <div className="level-cell">
-                        Lvl {user.level}
-                    </div>
-                </div>
-            ))}
-        </div>
-    );
-};
 
 const LeaderboardsHub = () => {
-    const dispatch = useDispatch();
-    const [searchParams, setSearchParams] = useSearchParams();
-    
-    // Get current tab from URL or default to 'hub'
-    const currentTab = searchParams.get('tab') || 'hub';
+    const [searchParams] = useSearchParams();
+    const initialTab = searchParams.get('tab') || 'global';
+    const [activeTab, setActiveTab] = useState(initialTab);
 
-    // State data
-    const activeLeaderboardData = useSelector((state) => selectLeaderboard(state, currentTab));
-    const gameLeaderboardData = useSelector((state) => state.leaderboards.gameSpecific); // Access directly for now or add selector
+    // Mock Data for demonstration
+    const mockLeaderboard = [
+        { rank: 1, name: "Ninja Master", xp: 15000, badge: "legend" },
+        { rank: 2, name: "Code Wizard", xp: 14200, badge: "diamond" },
+        { rank: 3, name: "Pixel Artist", xp: 12800, badge: "gold" },
+        { rank: 4, name: "Edu Explorer", xp: 11000, badge: "silver" },
+        { rank: 5, name: "Quiz Whiz", xp: 9500, badge: "bronze" },
+    ];
 
-    const [subFilter, setSubFilter] = React.useState('global');
-
-    // Reset sub-filter when tab changes
-    useEffect(() => {
-        setSubFilter('global');
-    }, [currentTab]);
-    
-    const handleTabChange = (tabId) => {
-        setSearchParams({ tab: tabId });
-        if (tabId !== 'hub') {
-            dispatch(setCategory(tabId));
+    const getRankIcon = (rank) => {
+        switch(rank) {
+            case 1: return <FaCrown className="text-warning" size={24} />;
+            case 2: return <FaMedal className="text-secondary" size={24} />; // Silverish
+            case 3: return <FaMedal className="text-danger" size={24} />; // Bronzeish
+            default: return <span className="fw-bold text-secondary">#{rank}</span>;
         }
     };
-
-    // Helper to map generic value to specific field based on config
-    const getProcessedData = () => {
-        let rawData = activeLeaderboardData;
-
-        // Handle Game Specific Data Override
-        if (currentTab === 'funzone' && subFilter !== 'global') {
-            rawData = gameLeaderboardData[subFilter] || [];
-        }
-
-        if (!rawData) return [];
-
-        return rawData.map(user => {
-            let val = user.value;
-            // Override value based on type if needed, or rely on mock generator's 'value'
-            if (currentTab === 'streak') val = user.streak;
-            if (currentTab === 'xp') val = user.xp;
-            if (currentTab === 'journal') val = user.entries;
-            // ... etc
-            
-            return { ...user, value: val };
-        }).sort((a, b) => b.value - a.value).map((u, i) => ({...u, rank: i + 1}));
-    };
-
-    const displayData = getProcessedData();
-    const topThree = displayData.slice(0, 3);
-    const listData = displayData.slice(3);
-    const activeConfig = LEADERBOARD_CONFIG.find(c => c.id === currentTab);
 
     return (
-        <div className="leaderboards-page">
+        <div style={{ minHeight: '100vh', background: '#0f172a', color: 'white' }}>
             <HomeNavbar />
             
-            <div className="leaderboards-container">
-                <header className="leaderboards-header">
-                    <h1 className="leaderboards-title">Leaderboards</h1>
-                    <p className="leaderboards-subtitle">
-                        Compare your progress with fellow ninjas in the Eduverse!
-                    </p>
-                </header>
-
-                {/* Navigation Tabs */}
-                <div className="leaderboard-tabs">
-
-                    {LEADERBOARD_CONFIG.map(tab => (
-                        <button 
-                            key={tab.id}
-                            className={`tab-btn ${currentTab === tab.id ? 'active' : ''}`}
-                            onClick={() => handleTabChange(tab.id)}
-                        >
-                            {tab.label}
-                        </button>
-                    ))}
+            <div className="container py-5 mt-5">
+                <div className="text-center mb-5 fade-in-up">
+                    <h1 className="display-4 fw-bold">
+                        <span className="text-gradient">Leaderboards</span> <FaTrophy className="text-warning" />
+                    </h1>
+                    <p className="lead text-secondary">See who's topping the charts in Eduverse!</p>
                 </div>
 
-                {/* Main Content Area */}
-                {currentTab === 'hub' ? (
-                    <div className="categories-grid">
-                        {LEADERBOARD_CONFIG.map(cat => (
-                            <div 
-                                key={cat.id} 
-                                className="category-card"
-                                onClick={() => handleTabChange(cat.id)}
-                            >
-                                <div className="category-icon">{cat.icon}</div>
-                                <div className="category-title">{cat.label}</div>
-                                <div className="category-desc">{cat.description}</div>
-                            </div>
-                        ))}
-                    </div>
-                ) : (
-                    <div className="leaderboard-view animate-fade-in">
-                        {/* Sub-filters for Funzone */}
-                        {currentTab === 'funzone' && (
-                            <div className="d-flex justify-content-center gap-2 mb-4">
-                                <button 
-                                    className={`btn btn-sm ${subFilter === 'global' ? 'btn-primary' : 'btn-outline-light'}`}
-                                    onClick={() => setSubFilter('global')}
-                                >
-                                    Global
-                                </button>
-                                <button 
-                                    className={`btn btn-sm ${subFilter === 'game-1' ? 'btn-primary' : 'btn-outline-light'}`}
-                                    onClick={() => setSubFilter('game-1')}
-                                >
-                                    Snake
-                                </button>
-                                <button 
-                                    className={`btn btn-sm ${subFilter === 'game-2' ? 'btn-primary' : 'btn-outline-light'}`}
-                                    onClick={() => setSubFilter('game-2')}
-                                >
-                                    Trivia
-                                </button>
-                            </div>
-                        )}
+                {/* Tabs */}
+                <div className="d-flex justify-content-center gap-3 mb-5">
+                    <button 
+                        className={`btn rounded-pill px-4 ${activeTab === 'global' ? 'btn-primary' : 'btn-outline-secondary'}`}
+                        onClick={() => setActiveTab('global')}
+                    >
+                         <FaTrophy className="me-2" /> Global
+                    </button>
+                    <button 
+                        className={`btn rounded-pill px-4 ${activeTab === 'funzone' ? 'btn-warning text-dark' : 'btn-outline-secondary'}`}
+                        onClick={() => setActiveTab('funzone')}
+                    >
+                         <FaGamepad className="me-2" /> Funzone
+                    </button>
+                </div>
 
-                        <Podium topThree={topThree} />
-                        <LeaderboardTable 
-                            data={listData} 
-                            metricLabel={activeConfig?.metric || 'Score'} 
-                        />
+                {/* Leaderboard List */}
+                <div className="row justify-content-center">
+                    <div className="col-lg-8">
+                        <div className="card bg-dark border-secondary shadow-lg">
+                            <div className="card-header border-secondary bg-transparent p-3">
+                                <h4 className="mb-0 text-light"><FaTrophy className="me-2 text-warning" /> Top Players</h4>
+                            </div>
+                            <div className="list-group list-group-flush">
+                                {mockLeaderboard.map((user) => (
+                                    <div key={user.rank} className="list-group-item bg-transparent border-secondary text-light d-flex align-items-center p-3 hover-effect">
+                                        <div className="me-4" style={{ width: '40px', textAlign: 'center' }}>
+                                            {getRankIcon(user.rank)}
+                                        </div>
+                                        <div className="d-flex align-items-center flex-grow-1">
+                                            <div className="rounded-circle bg-secondary d-flex align-items-center justify-content-center me-3" style={{ width: '45px', height: '45px' }}>
+                                                <FaUserAstronaut size={24} />
+                                            </div>
+                                            <div>
+                                                <h5 className="mb-0 fw-bold">{user.name}</h5>
+                                                <small className="text-secondary">Rank {user.badge}</small>
+                                            </div>
+                                        </div>
+                                        <div className="text-end">
+                                            <h5 className="mb-0 text-primary fw-bold">{user.xp.toLocaleString()} XP</h5>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
                     </div>
-                )}
+                </div>
             </div>
         </div>
     );

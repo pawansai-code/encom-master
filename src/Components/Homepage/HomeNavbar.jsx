@@ -37,7 +37,6 @@ const HomeNavbar = () => {
             type: 'dropdown',
             items: [
                 { name: 'Community', id: 'features', type: 'scroll' },
-                { name: 'Rewards', path: '/rewards', type: 'route' },
                 { name: 'Journal', path: '/journal', type: 'route' }
             ]
         },
@@ -45,8 +44,7 @@ const HomeNavbar = () => {
             name: 'Productivity', 
             type: 'dropdown',
             items: [
-                { name: 'Dashboard', path: '/dashboard', type: 'route' },
-                { name: 'Achievements', path: '/leaderboards', type: 'route' }
+                { name: 'Dashboard', path: '/dashboard', type: 'route' }
             ]
         }
     ];

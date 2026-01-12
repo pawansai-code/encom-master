@@ -6,7 +6,7 @@ const defaultGames = [
     { id: 'code-breaker', name: 'Code Breaker', category: 'Puzzle', status: 'active', plays: 500, rating: 4.7 },
     { id: 'tic-tac-toe', name: 'Tic Tac Toe', category: 'Classic', status: 'active', plays: 3000, rating: 4.2 },
     { id: 'trivia', name: 'Ninja Trivia', category: 'Education', status: 'active', plays: 1500, rating: 4.5 },
-    { id: 'typing', name: 'Speed Typer', category: 'Skill', status: 'maintenance', plays: 800, rating: 4.6 },
+    { id: 'typing', name: 'Speed Typer', category: 'Skill', status: 'active', plays: 800, rating: 4.6 },
     { id: 'chess-lite', name: 'Chess Lite', category: 'Strategy', status: 'active', plays: 600, rating: 4.9 }
 ];
 

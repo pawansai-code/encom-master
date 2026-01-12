@@ -6,10 +6,12 @@ import HomeNavbar from '../../Components/Homepage/HomeNavbar';
 import { updateActivity } from '../../State/slices/userSlice';
 import { ChessLite } from './components/ChessLite';
 import { CodeBreaker } from './components/CodeBreaker';
-import { MemoryGame, PlaceholderGame, TicTacToeGame, TypingGame } from './components/GameComponents';
+import { MemoryGame, PlaceholderGame, TicTacToeGame } from './components/GameComponents';
 import { GeometryDashGame } from './components/GeometryDashGame';
 import { HangmanGame } from './components/HangmanGame';
+import { NinjaTriviaGame } from './components/NinjaTriviaGame';
 import { SnakeGame } from './components/SnakeGame';
+import { SpeedTyperGame } from './components/SpeedTyperGame';
 import { GAMES_CONFIG } from './gamesConfig';
 import './styles/Funzone.css';
 
@@ -49,11 +51,12 @@ const GameView = () => {
         switch (gameId) {
             case 'tic-tac-toe': return <TicTacToeGame />;
             case 'memory': return <MemoryGame />;
-            case 'typing': return <TypingGame />;
+            case 'typing': return <SpeedTyperGame />;
             case 'snake': return <SnakeGame />;
             case 'chess-lite': return <ChessLite />;
             case 'code-breaker': return <CodeBreaker />;
             case 'hangman': return <HangmanGame />;
+            case 'trivia': return <NinjaTriviaGame />;
             case 'geometry-dash': return <GeometryDashGame />;
             default: return <PlaceholderGame name={game.name} />;
         }

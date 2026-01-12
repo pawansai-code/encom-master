@@ -32,8 +32,6 @@ import ToolView from './Pages/Tools/ToolView';
 
 // Features
 import ChatbotPage from './Pages/Chatbot/ChatbotPage';
-import LeaderboardsHub from './Pages/Leaderboards/LeaderboardsHub';
-import RewardsPage from './Pages/Rewards/RewardsPage';
 
 
 function App() {
@@ -99,8 +97,6 @@ function App() {
             <Route path="/chatbot" element={<ChatbotPage />} />
             <Route path="/journal" element={<JournalHub />} />
 
-            <Route path="/rewards" element={<RewardsPage />} />
-            <Route path="/leaderboards" element={<LeaderboardsHub />} />
             <Route path="/hub/contact" element={<ContactUs />} />
             <Route path="/HomePage" element={<Homepage />} />
             {/* Admin Routes */}
