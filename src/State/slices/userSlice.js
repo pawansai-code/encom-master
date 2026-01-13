@@ -1,12 +1,8 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { jwtDecode } from "jwt-decode";
-import { loginUser as loginAPI, registerUser as registerAPI } from '../../api/auth';
-
-
 
 const defaultUserState = {
     streaks: {
-        login: { current: 0, longest: 0, lastActive: null, history: {} },
+        login: { current: 1, longest: 5, lastActive: new Date().toISOString(), history: {} },
         tools: { current: 0, longest: 0, lastActive: null, history: {} },
         journal: { current: 0, longest: 0, lastActive: null, history: {} },
         community: { current: 0, longest: 0, lastActive: null, history: {} },
@@ -19,17 +15,17 @@ const defaultUserState = {
         habits: []
     },
     rewards: {
-        coins: 0,
-        points: 0,
-        level: 1,
-        xp: 0,
-        unlockedTitles: ['Novice'],
-        currentTitle: 'Novice',
+        coins: 1500,
+        points: 500,
+        level: 5,
+        xp: 2500,
+        unlockedTitles: ['Novice', 'Apprentice'],
+        currentTitle: 'Apprentice',
         badges: [],
         medals: []
     },
     wallet: {
-        balance: 0,
+        balance: 50.00,
         transactions: []
     },
     activityLog: [],
@@ -40,208 +36,96 @@ const defaultUserState = {
     }
 };
 
+const mockUser = {
+    uid: 'mock-user-123',
+    email: 'student@eduverse.com',
+    role: 'student',
+    data: {
+        ...defaultUserState,
+        name: 'Ninja Student',
+        role: 'student',
+        email: 'student@eduverse.com'
+    }
+};
+
+// Mock Login - Just for structural integrity if needed
 export const loginUser = createAsyncThunk(
     'user/login',
     async ({ email, password }, { rejectWithValue }) => {
-        try {
-            const response = await loginAPI({ email, password });
-            const { token } = response.data;
-
-            // Store token
-            localStorage.setItem('token', token);
-
-            // Decode token to get user info
-            const decoded = jwtDecode(token);
-
-            return {
-                uid: decoded.id,
-                email: email,
-                role: decoded.role,
-                data: {
-                    ...defaultUserState,
-                    name: decoded.name || 'Ninja Student', // Decode name if available
-                    role: decoded.role,
-                    email: email
-                }
-            };
-        } catch (error) {
-            return rejectWithValue(error.response?.data?.message || error.message);
-        }
+        // Return mock user immediately
+        return mockUser;
     }
 );
-
-
 
 export const signupUser = createAsyncThunk(
     'user/signup',
-    async ({ email, password, username }, { rejectWithValue }) => {
-        try {
-            const response = await registerAPI({
-                email,
-                password,
-                name: username // Backend expects 'name'
-            });
-            const { token } = response.data;
-
-            localStorage.setItem('token', token);
-            const decoded = jwtDecode(token);
-
-            const newUserData = {
-                ...defaultUserState,
-                email: email,
-                username: username,
-                role: 'student', // Default
-                createdAt: new Date().toISOString()
-            };
-
-            return {
-                uid: decoded.id,
-                email: email,
-                name: username,
-                role: 'student',
-                data: {
-                    ...newUserData,
-                    // ensure name is in data for Dashboard
-                    name: username
-                }
-            };
-        } catch (error) {
-            return rejectWithValue(error.response?.data?.message || error.message);
-        }
+    async (data, { rejectWithValue }) => {
+        return {
+            ...mockUser,
+            email: data.email,
+            data: { ...mockUser.data, name: data.username, email: data.email }
+        };
     }
 );
-
-
 
 export const logoutUser = createAsyncThunk(
     'user/logout',
-    async (_, { rejectWithValue }) => {
-        try {
-            localStorage.removeItem('token');
-            return null;
-        } catch (error) {
-            return rejectWithValue(error.message);
-        }
+    async (_, { dispatch }) => {
+        return null;
     }
 );
-
 
 export const signupAdmin = createAsyncThunk(
     'user/signupAdmin',
-    async ({ email, password, username, adminKey }, { rejectWithValue }) => {
-        try {
-            if (adminKey !== 'SENSEI') {
-                return rejectWithValue("Invalid Sensei Key. Initiation Failed.");
-            }
-
-            const newUserData = {
-                ...defaultUserState,
-                email: email,
-                username: username,
-                role: 'admin',
-                createdAt: new Date().toISOString()
-            };
-
-            return {
-                uid: 'mock-admin-uid',
-                email: email,
-                name: username,
-                photoURL: "https://api.dicebear.com/7.x/avataaars/svg?seed=" + username,
-                emailVerified: true,
-                data: newUserData
-            };
-        } catch (error) {
-            return rejectWithValue(error.message);
-        }
+    async (data, { rejectWithValue }) => {
+        return mockUser; // Mock behavior
     }
 );
 
-// Verify Admin Key
 export const verifyAdmin = createAsyncThunk(
     'user/verifyAdmin',
-    async ({ email, password, adminKey }, { rejectWithValue }) => {
-        try {
-            // First authenticate with backend
-            const response = await loginAPI({ email, password });
-            const { token } = response.data;
-            const decoded = jwtDecode(token);
-
-            // Check if user has admin role
-            if (decoded.role !== 'admin') {
-                // Even if password is correct, strictly deny if not admin
-                throw new Error("Access Denied: Not an Administrator.");
-            }
-
-            // Optional: You can still check adminKey if you really want a secondary secret
-            // But usually role check is enough. Leaving it as a 'frontend-only' double check or 
-            // if backend had a specific check, we'd pass it. 
-            // The user requested 'adminKey' on UI, so let's enforce it on frontend for now 
-            // or pass it to backend if backend supported it. 
-            // Given the simple backend, we'll just check it here or ignore it if we trust the role.
-            // Let's keep the 'SENSEI' check for 'extra security' simulation requested by user previously?
-            // Actually, better to enforce it via role.
-
-            // If the user really wants the 'Sensei Key' feature, we keep it:
-            if (adminKey !== 'SENSEI' && adminKey !== 'admin') { // Allowing 'admin' as key too for ease
-                throw new Error("Invalid Sensei Key.");
-            }
-
-            localStorage.setItem('token', token);
-
-            return {
-                uid: decoded.id,
-                email: email,
-                name: decoded.name || 'Admin',
-                role: 'admin',
-                data: {
-                    ...defaultUserState,
-                    role: 'admin',
-                    name: decoded.name || 'Wise Sensei'
-                }
-            };
-        } catch (error) {
-            return rejectWithValue(error.response?.data?.message || error.message);
-        }
+    async (data, { rejectWithValue }) => {
+        return { ...mockUser, role: 'admin', data: { ...mockUser.data, role: 'admin', name: 'Wise Sensei' } };
     }
 );
 
 export const saveUserProfile = createAsyncThunk(
     'user/saveProfile',
-    async ({ name, photoFile, ...otherData }, { rejectWithValue, getState }) => {
-        try {
-            // Mock Save Profile
-            // Just return updated data to update state
-            return {
-                ...getState().user.profile,
-                name,
-                photoURL: getState().user.profile.photoURL, // Keep old one for now or mock new one
-                ...otherData
-            };
-
-        } catch (error) {
-            return rejectWithValue(error.message);
-        }
+    async ({ name, photoFile, ...otherData }, { getState }) => {
+        return {
+            ...getState().user.profile,
+            name,
+            ...otherData
+        };
     }
 );
 
-// Update User Activity
+// Update User Activity - Mock Version (Frontend Only)
 export const updateActivity = createAsyncThunk(
     'user/updateActivity',
-    async ({ type, gameId, xpEarned, description }, { rejectWithValue }) => {
-        try {
-            const token = localStorage.getItem('token');
-            const response = await logUserActivity(token, { type, gameId, xpEarned, description });
-            return response.data; // Expected { xp, coins, rank }
-        } catch (error) {
-            return rejectWithValue(error.message);
-        }
+    async ({ type, gameId, xpEarned, description }, { getState }) => {
+        const currentXP = getState().user.profile.data.rewards.xp || 0;
+        const currentCoins = getState().user.profile.data.rewards.coins || 0;
+
+        // Simple mock calculation
+        const newXP = currentXP + (xpEarned || 10);
+        const newCoins = currentCoins + 5;
+        const newRank = newXP > 5000 ? 'Ninja Master' : 'Apprentice';
+
+        return {
+            xp: newXP,
+            coins: newCoins,
+            rank: newRank,
+            type,
+            gameId,
+            description
+        };
     }
 );
 
 const initialState = {
-
-    profile: null, // User is null when not logged in
-    status: 'idle', // 'idle' | 'loading' | 'succeeded' | 'failed'
+    profile: mockUser, // Start LOGGED IN by default
+    status: 'succeeded',
     error: null,
     privacy: {
         searchVisibility: true,
@@ -252,7 +136,7 @@ const initialState = {
     account: {
         twoFactor: false,
         sessions: [
-            { id: 1, device: 'Chrome on Windows', ip: '192.168.1.1', location: 'New York, USA', active: true, lastActive: 'Now' }
+            { id: 1, device: 'Chrome on Windows', ip: '127.0.0.1', location: 'Localhost', active: true, lastActive: 'Now' }
         ]
     }
 };
@@ -282,7 +166,6 @@ const userSlice = createSlice({
             state.account.sessions = state.account.sessions.filter(session => session.active);
         },
         setUser: (state, action) => {
-            // For manually setting user from auth state listener if needed
             state.profile = action.payload;
             state.status = 'succeeded';
         },
@@ -297,85 +180,47 @@ const userSlice = createSlice({
     extraReducers: (builder) => {
         builder
             // Login
-            .addCase(loginUser.pending, (state) => {
-                state.status = 'loading';
-                state.error = null;
-            })
             .addCase(loginUser.fulfilled, (state, action) => {
                 state.status = 'succeeded';
                 state.profile = action.payload;
-                state.error = null;
-            })
-            .addCase(loginUser.rejected, (state, action) => {
-                state.status = 'failed';
-                state.error = action.payload;
             })
             // Signup
-            .addCase(signupUser.pending, (state) => {
-                state.status = 'loading';
-                state.error = null;
-            })
             .addCase(signupUser.fulfilled, (state, action) => {
                 state.status = 'succeeded';
                 state.profile = action.payload;
-                state.error = null;
             })
-            .addCase(signupUser.rejected, (state, action) => {
-                state.status = 'failed';
-                state.error = action.payload;
-            })
-            // Admin Signup
-            .addCase(signupAdmin.pending, (state) => {
-                state.status = 'loading';
-                state.error = null;
-            })
-            .addCase(signupAdmin.fulfilled, (state, action) => {
+            // Admin
+            .addCase(verifyAdmin.fulfilled, (state, action) => {
                 state.status = 'succeeded';
                 state.profile = action.payload;
-                state.error = null;
-            })
-            .addCase(signupAdmin.rejected, (state, action) => {
-                state.status = 'failed';
-                state.error = action.payload;
             })
             // Logout
             .addCase(logoutUser.fulfilled, (state) => {
                 state.profile = null;
                 state.status = 'idle';
             })
-            // Admin Login
-            .addCase(verifyAdmin.pending, (state) => {
-                state.status = 'loading';
-                state.error = null;
-            })
-            .addCase(verifyAdmin.fulfilled, (state, action) => {
-                state.status = 'succeeded';
-                state.profile = action.payload;
-                state.error = null;
-            })
-            .addCase(verifyAdmin.rejected, (state, action) => {
-                state.status = 'failed';
-                state.error = action.payload;
-            })
             // Save Profile
-            .addCase(saveUserProfile.pending, (state) => {
-                state.status = 'loading';
-                state.error = null;
-            })
             .addCase(saveUserProfile.fulfilled, (state, action) => {
-                state.status = 'succeeded';
                 state.profile = action.payload;
-                state.error = null;
             })
-            // Update Activity (Optimistic or Response based)
+            // Update Activity
             .addCase(updateActivity.fulfilled, (state, action) => {
                 if (state.profile && state.profile.data) {
                     state.profile.data.rewards.xp = action.payload.xp;
                     state.profile.data.rewards.coins = action.payload.coins;
                     state.profile.data.rewards.currentTitle = action.payload.rank;
-                    // Also update flattened fields if used by Dashboard
                     state.profile.data.xp = action.payload.xp;
                     state.profile.data.rank = action.payload.rank;
+                    // Add to activity log if desired
+                    state.profile.data.activityLog = [
+                        {
+                            id: Date.now(),
+                            type: action.payload.type,
+                            description: action.payload.description,
+                            date: new Date().toISOString()
+                        },
+                        ...(state.profile.data.activityLog || [])
+                    ];
                 }
             });
     }
