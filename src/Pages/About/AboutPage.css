@@ -16,8 +16,9 @@
     overflow-x: hidden;
     position: relative;
     padding-top: 80px;
-    /* Navbar height */
     font-family: 'Outfit', sans-serif;
+    display: flex;
+    flex-direction: column;
 }
 
 /* Background Animation */
@@ -81,15 +82,16 @@
 .about-container {
     position: relative;
     z-index: 2;
-    max-width: 1200px;
+    max-width: 1000px;
     margin: 0 auto;
     padding: 20px;
+    flex: 1;
 }
 
 /* Hero Section */
 .about-hero {
     text-align: center;
-    padding: 80px 0;
+    padding: 60px 0 40px;
     animation: fadeInDown 1s ease-out;
 }
 
@@ -112,187 +114,58 @@
     line-height: 1.6;
 }
 
-/* Mission Scrolls */
-.mission-section {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 30px;
-    justify-content: center;
-    margin: 60px 0;
+/* Story Section */
+.story-section {
+    padding: 40px 0 80px;
 }
 
-.scroll-card {
-    background: rgba(255, 255, 255, 0.05);
+.story-card {
+    background: rgba(20, 20, 35, 0.6);
     backdrop-filter: blur(10px);
     border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 15px;
-    padding: 30px;
-    width: 350px;
-    text-align: center;
-    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    border-radius: 20px;
+    padding: 4rem;
     position: relative;
     overflow: hidden;
+    animation: slideUp 0.8s ease-out 0.3s backwards;
 }
 
-.scroll-card::before {
+.story-card::before {
     content: '';
     position: absolute;
     top: 0;
     left: 0;
-    width: 4px;
-    height: 100%;
-    background: var(--ninja-accent-pink);
-    transform: scaleY(0);
-    transition: transform 0.4s ease;
-    transform-origin: bottom;
+    width: 100%;
+    height: 4px;
+    background: linear-gradient(90deg, var(--ninja-accent-pink), var(--ninja-accent-blue));
 }
 
-.scroll-card:hover {
-    transform: translateY(-10px);
-    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
-    border-color: var(--ninja-accent-pink);
-}
-
-.scroll-card:hover::before {
-    transform: scaleY(1);
-}
-
-.scroll-icon {
-    font-size: 3rem;
-    margin-bottom: 20px;
+.story-content h2 {
+    font-size: 2.5rem;
     color: var(--ninja-accent-blue);
-    animation: pulse 2s infinite;
-}
-
-.scroll-title {
-    font-size: 1.5rem;
+    margin-bottom: 1.5rem;
     font-weight: 700;
-    margin-bottom: 15px;
-    color: white;
 }
 
-.scroll-text {
-    color: var(--text-secondary);
-    line-height: 1.5;
-}
-
-/* Interactive Team Section */
-.team-section {
-    padding: 60px 0;
-}
-
-.section-header {
-    text-align: center;
-    margin-bottom: 50px;
-}
-
-.section-header h2 {
-    font-size: 3rem;
-    font-weight: 700;
-    color: var(--text-primary);
-}
-
-.team-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 30px;
-}
-
-.ninja-card {
-    height: 400px;
-    perspective: 1000px;
-    cursor: pointer;
-}
-
-.card-inner {
-    position: relative;
-    width: 100%;
-    height: 100%;
-    text-align: center;
-    transition: transform 0.8s;
-    transform-style: preserve-3d;
-}
-
-.ninja-card:hover .card-inner {
-    transform: rotateY(180deg);
-}
-
-.card-front,
-.card-back {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    -webkit-backface-visibility: hidden;
-    backface-visibility: hidden;
-    border-radius: 20px;
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.card-front {
-    background: linear-gradient(145deg, #1a1a2e, #16213e);
-}
-
-.card-back {
-    background: linear-gradient(145deg, var(--ninja-accent-pink), #c70039);
-    color: white;
-    transform: rotateY(180deg);
-    padding: 20px;
-}
-
-.ninja-avatar {
-    width: 150px;
-    height: 150px;
-    background: #0f3460;
-    border-radius: 50%;
-    margin-bottom: 20px;
-    border: 4px solid var(--ninja-accent-pink);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 4rem;
-}
-
-.ninja-name {
+.story-content h3 {
     font-size: 1.8rem;
-    font-weight: 700;
-    margin-bottom: 10px;
+    color: var(--ninja-accent-pink);
+    margin-top: 2.5rem;
+    margin-bottom: 1rem;
+    font-weight: 600;
 }
 
-.ninja-role {
-    color: var(--ninja-accent-blue);
-    font-size: 1.1rem;
-    font-weight: 500;
+.story-text {
+    font-size: 1.15rem;
+    line-height: 1.8;
+    color: #e0e0e0;
+    margin-bottom: 1.5rem;
+    text-align: justify;
 }
 
-.stat-bar {
-    width: 100%;
-    margin-top: 15px;
-}
-
-.stat-label {
-    display: flex;
-    justify-content: space-between;
-    font-size: 0.9rem;
-    margin-bottom: 5px;
-}
-
-.progress-container {
-    width: 100%;
-    height: 8px;
-    background: rgba(255, 255, 255, 0.3);
-    border-radius: 4px;
-    overflow: hidden;
-}
-
-.progress-fill {
-    height: 100%;
-    background: white;
-    border-radius: 4px;
+.highlight {
+    color: var(--ninja-gold);
+    font-weight: bold;
 }
 
 /* Animations Keyframes */
@@ -308,28 +181,15 @@
     }
 }
 
-@keyframes pulse {
-    0% {
-        transform: scale(1);
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(50px);
     }
 
-    50% {
-        transform: scale(1.1);
-    }
-
-    100% {
-        transform: scale(1);
-    }
-}
-
-/* Responsiveness */
-@media (max-width: 768px) {
-    .hero-title {
-        font-size: 2.5rem;
-    }
-
-    .scroll-card {
-        width: 100%;
+    to {
+        opacity: 1;
+        transform: translateY(0);
     }
 }
 
@@ -345,7 +205,6 @@
     overflow: hidden;
 }
 
-/* The Screen Flash */
 .lightning-flash {
     position: absolute;
     top: 0;
@@ -357,7 +216,6 @@
     animation: flash-anim 0.3s ease-out forwards;
 }
 
-/* The Bolt Shape */
 .lightning-bolt {
     position: absolute;
     top: -50px;
@@ -410,5 +268,20 @@
     100% {
         opacity: 0;
         transform: scaleY(1) translateX(-10px);
+    }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .hero-title {
+        font-size: 2.5rem;
+    }
+
+    .story-card {
+        padding: 2rem;
+    }
+
+    .story-content h2 {
+        font-size: 2rem;
     }
 }

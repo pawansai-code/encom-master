@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
-import { FaBolt, FaBrain, FaCode, FaDragon, FaGlobe, FaShieldAlt, FaUserSecret } from 'react-icons/fa';
-import { GiNinjaHead, GiNinjaMask, GiShuriken } from 'react-icons/gi';
+import { GiNinjaHead, GiShuriken } from 'react-icons/gi';
+import HomeFooter from '../../Components/Homepage/HomeFooter';
 import HomeNavbar from '../../Components/Homepage/HomeNavbar';
 import './AboutPage.css';
 
@@ -33,56 +33,6 @@ const AboutPage = () => {
         const initialTimer = setTimeout(triggerLightning, 2000);
         return () => clearTimeout(initialTimer);
     }, []);
-
-    // Interactive Team Data
-    const teamMembers = [
-        {
-            id: 1,
-            name: "Sensei Code",
-            role: "Master Architect",
-            icon: <GiNinjaMask />,
-            stats: { skill: "React", level: 99 }
-        },
-        {
-            id: 2,
-            name: "Shadow Design",
-            role: "UI/UX Ninja",
-            icon: <FaUserSecret />,
-            stats: { skill: "CSS3", level: 95 }
-        },
-        {
-            id: 3,
-            name: "Rogue Bug",
-            role: "QA Specialist",
-            icon: <GiShuriken />,
-            stats: { skill: "Testing", level: 90 }
-        },
-        {
-            id: 4,
-            name: "Cyber Monk",
-            role: "Backend Guru",
-            icon: <FaBrain />,
-            stats: { skill: "Node.js", level: 98 }
-        },
-    ];
-
-    const values = [
-        {
-            icon: <FaGlobe />,
-            title: "Universal Access",
-            desc: "Education for every ninja, anywhere in the multiverse."
-        },
-        {
-            icon: <FaBolt />,
-            title: "Lightning Fast",
-            desc: "Optimized learning paths for rapid skill acquisition."
-        },
-        {
-            icon: <FaShieldAlt />,
-            title: "Secure Future",
-            desc: "Empowering students with knowledge that lasts a lifetime."
-        }
-    ];
 
     return (
         <div className="about-page">
@@ -129,76 +79,40 @@ const AboutPage = () => {
                         The Eduverse Story
                     </h1>
                     <p className="hero-subtitle">
-                        Born from the shadows of traditional learning, we emerged to train the next generation of digital warriors. 
-                        Our dojo is the internet, our weapons are knowledge.
+                        From the shadows of ignorance to the light of knowledge.
                     </p>
                 </section>
 
-                {/* Mission Scrolls (Cards) */}
-                <section className="mission-section">
-                    {values.map((val, idx) => (
-                        <div key={idx} className="scroll-card">
-                            <div className="scroll-icon">{val.icon}</div>
-                            <h3 className="scroll-title">{val.title}</h3>
-                            <p className="scroll-text">{val.desc}</p>
-                        </div>
-                    ))}
-                </section>
+                {/* Story Section */}
+                <section className="story-section">
+                    <div className="story-card">
+                        <div className="story-content">
+                            <h2>The Legend Begins</h2>
+                            <p className="story-text">
+                                Long ago, in a digital landscape cluttered with dry textbooks and uninspiring lectures, a clan of rogue developers and educators gathered in the shadows. We realized that learning had lost its spark. The joy of discovery was being buried under mountains of rote memorization.
+                            </p>
+                            <p className="story-text">
+                                We envisioned a new world—<span className="highlight">The Eduverse</span>—where education wasn't a chore, but an adventure. A place where seeking knowledge made you a warrior, and mastering a skill made you a legend.
+                            </p>
 
-                {/* Interactive Team Grid */}
-                <section className="team-section">
-                    <div className="section-header">
-                        <h2><FaDragon className="text-danger me-2" /> Meet the Masters</h2>
-                        <p className="text-secondary">Hover over the cards to reveal their power levels.</p>
+                            <h3>The Struggles</h3>
+                            <p className="story-text">
+                                Building the dojo was no easy feat. We faced the <span className="highlight">Bug swarms of the North</span> that crashed our servers night after night. We battled the specter of <span className="highlight">Mobile Incompatibility</span>, ensuring our scrolls could be read on devices of all sizes. There were sleepless nights fueled only by dark roast coffee and determination.
+                            </p>
+                            <p className="story-text">
+                                But with every line of code, we forged a stronger platform. We integrated gamification not as a gimmick, but as the core philosophy. XP, ranks, and achievements were born to honor the student's journey.
+                            </p>
+
+                            <h3>The Path Forward</h3>
+                            <p className="story-text">
+                                Today, Eduverse stands as a beacon for digital ninjas everywhere. We continue to sharpen our tools, expand our libraries, and protect the sanctity of fun in learning. The journey is never over; there is always a higher belt to earn.
+                            </p>
+                        </div>
                     </div>
-                    
-                    <div className="team-grid">
-                        {teamMembers.map((member) => (
-                            <div key={member.id} className="ninja-card">
-                                <div className="card-inner">
-                                    {/* Front */}
-                                    <div className="card-front">
-                                        <div className="ninja-avatar">
-                                            {member.icon}
-                                        </div>
-                                        <h3 className="ninja-name">{member.name}</h3>
-                                        <span className="ninja-role">{member.role}</span>
-                                    </div>
-                                    
-                                    {/* Back */}
-                                    <div className="card-back">
-                                        <h3 className="mb-4">{member.name}</h3>
-                                        <p className="mb-4">"Silence is the ultimate weapon of the coder."</p>
-                                        <div className="stat-bar">
-                                            <div className="stat-label">
-                                                <span>{member.stats.skill}</span>
-                                                <span>{member.stats.level}%</span>
-                                            </div>
-                                            <div className="progress-container">
-                                                <div 
-                                                    className="progress-fill" 
-                                                    style={{ width: `${member.stats.level}%` }}
-                                                ></div>
-                                            </div>
-                                        </div>
-                                        <div className="mt-4">
-                                            <FaCode className="fs-2" />
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        ))}
-                    </div>
-                </section>
-                
-                {/* Join CTA */}
-                <section className="text-center py-5 mb-5">
-                    <h2 className="mb-4 display-4 fw-bold">Ready to start your training?</h2>
-                    <button className="btn btn-lg btn-danger rounded-pill px-5 py-3 fw-bold shadow-lg" style={{ background: 'linear-gradient(45deg, #ff2e63, #ff0844)', border: 'none' }}>
-                        Join the Clan <GiShuriken className="ms-2 spin-icon" />
-                    </button>
                 </section>
             </div>
+            
+            <HomeFooter />
         </div>
     );
 };

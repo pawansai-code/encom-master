@@ -40,7 +40,7 @@ const DashboardPage = () => {
                         <p className="text-secondary fs-5">Your multiverse journey continues here.</p>
                     </div>
                     <div className="col-lg-4 text-end d-none d-lg-block">
-                        <Link to="/profile" className="btn btn-outline-light rounded-pill px-4">
+                        <Link to="/settings" className="btn btn-outline-light rounded-pill px-4">
                             <FaUserEdit className="me-2" /> Edit Profile
                         </Link>
                     </div>

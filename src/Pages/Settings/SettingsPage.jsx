@@ -1,11 +1,11 @@
 import { useState } from 'react';
+import { FaLock, FaShieldAlt, FaUser } from 'react-icons/fa';
 import HomeNavbar from '../../Components/Homepage/HomeNavbar';
-import ProfileSettings from './components/ProfileSettings';
-import PrivacySettings from './components/PrivacySettings';
-import AccountSettings from './components/AccountSettings';
 import '../Dashboard/styles/Dashboard.css';
+import AccountSettings from './components/AccountSettings';
+import PrivacySettings from './components/PrivacySettings';
+import ProfileSettings from './components/ProfileSettings';
 import './styles/Settings.css';
-import { FaUser, FaShieldAlt, FaLock } from 'react-icons/fa';
 
 const SettingsPage = () => {
     const [activeTab, setActiveTab] = useState('profile');
@@ -24,6 +24,10 @@ const SettingsPage = () => {
             <HomeNavbar />
             
             <div className="container py-4 flex-grow-1">
+                <div className="mb-4 fade-in-up">
+                    <h2 className="fw-bold text-white">Account Settings</h2>
+                    <p className="text-secondary">Manage your profile, security, and preferences.</p>
+                </div>
                 <div className="row g-4 h-100">
                     {/* Sidebar */}
                     <div className="col-lg-3">

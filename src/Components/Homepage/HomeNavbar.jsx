@@ -44,7 +44,8 @@ const HomeNavbar = () => {
             name: 'Productivity', 
             type: 'dropdown',
             items: [
-                { name: 'Dashboard', path: '/dashboard', type: 'route' }
+                { name: 'Dashboard', path: '/dashboard', type: 'route' },
+                { name: 'Achievements', path: '/achievements', type: 'route' }
             ]
         }
     ];
@@ -184,8 +185,8 @@ const HomeNavbar = () => {
 
                         ) : (
                             <>
-                                <button className="btn text-light fw-bold login-btn me-2" onClick={() => navigate('/login')}>Login</button>
-                                <button className="btn rounded-pill px-4 signup-btn text-light" onClick={() => navigate('/signup')}>Sign Up</button>
+                                <button className="btn text-light fw-bold login-btn me-2" onClick={() => navigate('/auth/login')}>Login</button>
+                                <button className="btn rounded-pill px-4 signup-btn text-light" onClick={() => navigate('/auth/signup')}>Sign Up</button>
                             </>
                         )}
                     </div>

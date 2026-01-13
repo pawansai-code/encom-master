@@ -33,7 +33,8 @@ const defaultUserState = {
     settings: {
         theme: 'light',
         notifications: true
-    }
+    },
+    achievements: [] // For storing sticker objects
 };
 
 const mockUser = {
@@ -92,10 +93,22 @@ export const verifyAdmin = createAsyncThunk(
 export const saveUserProfile = createAsyncThunk(
     'user/saveProfile',
     async ({ name, photoFile, ...otherData }, { getState }) => {
-        return {
-            ...getState().user.profile,
+        const currentProfile = getState().user.profile;
+        const currentData = currentProfile.data || {};
+
+        // Update both root and nested data to ensure compatibility across components
+        // Some components read from root, others (like Dashboard) read from .data
+        const updatedData = {
+            ...currentData,
             name,
             ...otherData
+        };
+
+        return {
+            ...currentProfile,
+            name,
+            ...otherData,
+            data: updatedData
         };
     }
 );
@@ -175,6 +188,19 @@ const userSlice = createSlice({
         },
         setLoading: (state, action) => {
             state.status = action.payload ? 'loading' : 'idle';
+        },
+        addAchievement: (state, action) => {
+            // Check if profile exists
+            if (state.profile && state.profile.data) {
+                // Initialize if undefined
+                if (!state.profile.data.achievements) {
+                    state.profile.data.achievements = [];
+                }
+                // Add the new achievement (action.payload.achievement)
+                // In a real app we would check action.payload.userId matched state.profile.id
+                // Here we just mock it by adding to current user for instant feedback
+                state.profile.data.achievements.unshift(action.payload.achievement);
+            }
         }
     },
     extraReducers: (builder) => {
@@ -235,7 +261,8 @@ export const {
     terminateAllOtherSessions,
     setUser,
     clearUser,
-    setLoading
+    setLoading,
+    addAchievement
 } = userSlice.actions;
 
 export const selectUser = (state) => state.user.profile;
