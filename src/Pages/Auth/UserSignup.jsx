@@ -1,11 +1,17 @@
 import { useState } from 'react';
 import { FaEnvelope, FaEye, FaEyeSlash, FaLock, FaUser } from 'react-icons/fa';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
+import { googleLoginUser, selectUserError, selectUserStatus, signupUser } from '../../State/slices/userSlice';
 import AuthLayout from './AuthLayout';
 import GoogleAuthButton from './GoogleAuthButton';
 
 const UserSignup = () => {
     const navigate = useNavigate();
+    const dispatch = useDispatch();
+    const status = useSelector(selectUserStatus);
+    const error = useSelector(selectUserError);
+
     const [showPassword, setShowPassword] = useState(false);
     const [formData, setFormData] = useState({
         username: '',
@@ -13,25 +19,39 @@ const UserSignup = () => {
         password: '',
         confirmPassword: ''
     });
-    const [isLoading, setIsLoading] = useState(false);
+
+    const isLoading = status === 'loading';
 
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData(prev => ({ ...prev, [name]: value }));
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         if(formData.password !== formData.confirmPassword) {
             alert("Passwords do not match!");
             return;
         }
-        setIsLoading(true);
-        // Simulate Signup
-        setTimeout(() => {
-            setIsLoading(false);
-            navigate('/auth/verify-email');
-        }, 1500);
+        
+        const resultAction = await dispatch(signupUser({ 
+            email: formData.email, 
+            password: formData.password, 
+            name: formData.username 
+        }));
+
+        if (signupUser.fulfilled.match(resultAction)) {
+            // Navigate to dashboard after successful signup
+            // Or navigate to verify email if you implement email verification
+            navigate('/dashboard');
+        }
+    };
+
+    const handleGoogleSignup = async () => {
+        const resultAction = await dispatch(googleLoginUser());
+        if (googleLoginUser.fulfilled.match(resultAction)) {
+            navigate('/dashboard');
+        }
     };
 
     return (
@@ -40,6 +60,8 @@ const UserSignup = () => {
             subtitle="Join the Eduverse for free."
         >
             <form onSubmit={handleSubmit}>
+                {error && <div className="alert alert-danger">{error}</div>}
+                
                 <div className="form-group">
                     <label className="form-label">Username</label>
                     <div className="input-wrapper">
@@ -84,6 +106,7 @@ const UserSignup = () => {
                             value={formData.password}
                             onChange={handleChange}
                             required 
+                            style={{ paddingRight: '40px' }}
                         />
                          <button 
                             type="button"
@@ -108,6 +131,7 @@ const UserSignup = () => {
                             value={formData.confirmPassword}
                             onChange={handleChange}
                             required 
+                            style={{ paddingRight: '40px' }}
                         />
                     </div>
                 </div>
@@ -120,7 +144,7 @@ const UserSignup = () => {
                     <span>OR</span>
                 </div>
 
-                <GoogleAuthButton text="Sign up with Google" onClick={() => alert("Google Auth implementation coming soon!")} />
+                <GoogleAuthButton text="Sign up with Google" onClick={handleGoogleSignup} />
 
                 <div className="auth-footer">
                     Already have an account? 

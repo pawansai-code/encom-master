@@ -1,4 +1,8 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { updateProfile as updateAuthProfile } from 'firebase/auth';
+import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
+import { auth, storage } from '../../firebase';
+import { authService } from '../../Services/authService';
 
 const defaultUserState = {
     streaks: {
@@ -50,28 +54,74 @@ const mockUser = {
 };
 
 // Mock Login - Just for structural integrity if needed
+// Async Thunks
 export const loginUser = createAsyncThunk(
     'user/login',
     async ({ email, password }, { rejectWithValue }) => {
-        // Return mock user immediately
-        return mockUser;
+        const { user, error } = await authService.login(email, password);
+        if (error) return rejectWithValue(error);
+
+        // Merge firebase user with default app state structure
+        return {
+            uid: user.uid,
+            email: user.email,
+            role: 'student',
+            data: {
+                ...defaultUserState,
+                name: user.displayName || 'Student',
+                email: user.email,
+                role: 'student'
+            }
+        };
+    }
+);
+
+export const googleLoginUser = createAsyncThunk(
+    'user/googleLogin',
+    async (_, { rejectWithValue }) => {
+        const { user, error } = await authService.googleLogin();
+        if (error) return rejectWithValue(error);
+
+        return {
+            uid: user.uid,
+            email: user.email,
+            role: 'student',
+            data: {
+                ...defaultUserState,
+                name: user.displayName || 'Student',
+                email: user.email,
+                role: 'student',
+                avatar: user.photoURL
+            }
+        };
     }
 );
 
 export const signupUser = createAsyncThunk(
     'user/signup',
-    async (data, { rejectWithValue }) => {
+    async ({ email, password, name }, { rejectWithValue }) => {
+        const { user, error } = await authService.signUp(email, password, name);
+        if (error) return rejectWithValue(error);
+
         return {
-            ...mockUser,
-            email: data.email,
-            data: { ...mockUser.data, name: data.username, email: data.email }
+            uid: user.uid,
+            email: user.email,
+            role: 'student',
+            data: {
+                ...defaultUserState,
+                name: user.displayName || name || 'Student',
+                email: user.email,
+                role: 'student'
+            }
         };
     }
 );
 
 export const logoutUser = createAsyncThunk(
     'user/logout',
-    async (_, { dispatch }) => {
+    async (_, { rejectWithValue }) => {
+        const { error } = await authService.logout();
+        if (error) return rejectWithValue(error);
         return null;
     }
 );
@@ -92,24 +142,55 @@ export const verifyAdmin = createAsyncThunk(
 
 export const saveUserProfile = createAsyncThunk(
     'user/saveProfile',
-    async ({ name, photoFile, ...otherData }, { getState }) => {
-        const currentProfile = getState().user.profile;
-        const currentData = currentProfile.data || {};
+    async ({ name, photoFile, ...otherData }, { getState, rejectWithValue }) => {
+        try {
+            const currentProfile = getState().user.profile;
+            const currentData = currentProfile.data || {};
+            let photoURL = currentProfile.photoURL || currentProfile.avatar;
 
-        // Update both root and nested data to ensure compatibility across components
-        // Some components read from root, others (like Dashboard) read from .data
-        const updatedData = {
-            ...currentData,
-            name,
-            ...otherData
-        };
+            // 1. Upload Photo if provided
+            if (photoFile) {
+                // Ensure user is logged in
+                if (!auth.currentUser) throw new Error("No user logged in");
 
-        return {
-            ...currentProfile,
-            name,
-            ...otherData,
-            data: updatedData
-        };
+                const storageRef = ref(storage, `users/${auth.currentUser.uid}/profile_${Date.now()}`);
+                const snapshot = await uploadBytes(storageRef, photoFile);
+                photoURL = await getDownloadURL(snapshot.ref);
+
+                // Update Firebase Auth Profile
+                await updateAuthProfile(auth.currentUser, {
+                    photoURL: photoURL,
+                    displayName: name || auth.currentUser.displayName
+                });
+            } else if (name && name !== auth.currentUser?.displayName) {
+                // Just update name if no photo but name changed
+                if (auth.currentUser) {
+                    await updateAuthProfile(auth.currentUser, {
+                        displayName: name
+                    });
+                }
+            }
+
+            // Update both root and nested data to ensure compatibility across components
+            // Some components read from root, others (like Dashboard) read from .data
+            const updatedData = {
+                ...currentData,
+                name,
+                avatar: photoURL,
+                ...otherData
+            };
+
+            return {
+                ...currentProfile,
+                name,
+                photoURL: photoURL, // Standardize on photoURL
+                avatar: photoURL,   // Keep legacy avatar field for compatibility
+                ...otherData,
+                data: updatedData
+            };
+        } catch (error) {
+            return rejectWithValue(error.message);
+        }
     }
 );
 
@@ -209,11 +290,31 @@ const userSlice = createSlice({
             .addCase(loginUser.fulfilled, (state, action) => {
                 state.status = 'succeeded';
                 state.profile = action.payload;
+                state.error = null;
+            })
+            .addCase(loginUser.rejected, (state, action) => {
+                state.status = 'failed';
+                state.error = action.payload;
+            })
+            // Google Login
+            .addCase(googleLoginUser.fulfilled, (state, action) => {
+                state.status = 'succeeded';
+                state.profile = action.payload;
+                state.error = null;
+            })
+            .addCase(googleLoginUser.rejected, (state, action) => {
+                state.status = 'failed';
+                state.error = action.payload;
             })
             // Signup
             .addCase(signupUser.fulfilled, (state, action) => {
                 state.status = 'succeeded';
                 state.profile = action.payload;
+                state.error = null;
+            })
+            .addCase(signupUser.rejected, (state, action) => {
+                state.status = 'failed';
+                state.error = action.payload;
             })
             // Admin
             .addCase(verifyAdmin.fulfilled, (state, action) => {

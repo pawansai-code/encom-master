@@ -1,20 +1,33 @@
 
 import { useState } from 'react';
 import { FaEnvelope, FaEye, FaEyeSlash, FaLock } from 'react-icons/fa';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
+import { googleLoginUser, loginUser, selectUserError, selectUserStatus } from '../../State/slices/userSlice';
 import AuthLayout from './AuthLayout';
 import GoogleAuthButton from './GoogleAuthButton';
 
 const UserLogin = () => {
     const navigate = useNavigate();
+    const dispatch = useDispatch();
+    const status = useSelector(selectUserStatus);
+    const error = useSelector(selectUserError);
+    
     const [showPassword, setShowPassword] = useState(false);
     const [formData, setFormData] = useState({
         email: '',
         password: '',
         rememberMe: false
     });
-    const [isLoading, setIsLoading] = useState(false);
 
+    const isLoading = status === 'loading';
+
+    // Redirect if login successful
+    // Note: You might want to handle this in a parent component or a protected route wrapper, 
+    // but for now, we'll do it here if the status changes to succeeded.
+    // However, since we might already be logged in, it's good to check.
+    // Better relies on the centralized Auth check, but let's add a simple check here.
+    
     const handleChange = (e) => {
         const { name, value, type, checked } = e.target;
         setFormData(prev => ({
@@ -23,14 +36,19 @@ const UserLogin = () => {
         }));
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        setIsLoading(true);
-        // Simulate API call
-        setTimeout(() => {
-            setIsLoading(false);
-            navigate('/dashboard'); // Redirect to dashboard after login
-        }, 1500);
+        const resultAction = await dispatch(loginUser({ email: formData.email, password: formData.password }));
+        if (loginUser.fulfilled.match(resultAction)) {
+            navigate('/dashboard');
+        }
+    };
+
+    const handleGoogleLogin = async () => {
+        const resultAction = await dispatch(googleLoginUser());
+        if (googleLoginUser.fulfilled.match(resultAction)) {
+            navigate('/dashboard');
+        }
     };
 
     return (
@@ -39,6 +57,8 @@ const UserLogin = () => {
             subtitle="Please enter your details to sign in."
         >
             <form onSubmit={handleSubmit}>
+                {error && <div className="alert alert-danger">{error}</div>}
+                
                 <div className="form-group">
                     <label className="form-label">Email Address</label>
                     <div className="input-wrapper">
@@ -103,7 +123,7 @@ const UserLogin = () => {
                     <span>OR</span>
                 </div>
 
-                <GoogleAuthButton text="Sign in with Google" onClick={() => alert("Google Auth implementation coming soon!")} />
+                <GoogleAuthButton text="Sign in with Google" onClick={handleGoogleLogin} />
 
                 <div className="auth-footer">
                     Don't have an account? 
