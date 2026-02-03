@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { selectChatHistory, setConversation } from '../../../State/slices/chatSlice';
+import { selectChatHistory, setConversation, startNewChat } from '../../../State/slices/chatSlice';
 
 const ChatHistory = () => {
     const history = useSelector(selectChatHistory);
@@ -7,7 +7,7 @@ const ChatHistory = () => {
 
     return (
         <div style={{display: 'flex', flexDirection: 'column', height: '100%'}}>
-            <h2 className="chatbot-title">Conversations</h2>
+            <h2 className="chatbot-title">Recent Chats</h2>
             
             <button 
                 onClick={() => dispatch(startNewChat())}

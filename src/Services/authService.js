@@ -1,6 +1,9 @@
 
 import {
     createUserWithEmailAndPassword,
+    deleteUser,
+    sendEmailVerification,
+    sendPasswordResetEmail,
     signInWithEmailAndPassword,
     signInWithPopup,
     signOut,
@@ -71,6 +74,36 @@ export const authService = {
             return { error: null };
         } catch (error) {
             return { error: formatError(error) };
+        }
+    },
+
+    // Send Verification Email
+    verifyEmail: async (user) => {
+        try {
+            await sendEmailVerification(user);
+            return { success: true, error: null };
+        } catch (error) {
+            return { success: false, error: formatError(error) };
+        }
+    },
+
+    // Send Password Reset Email
+    sendPasswordReset: async (email) => {
+        try {
+            await sendPasswordResetEmail(auth, email);
+            return { success: true, error: null };
+        } catch (error) {
+            return { success: false, error: formatError(error) };
+        }
+    },
+
+    // Delete Account
+    deleteAccount: async (user) => {
+        try {
+            await deleteUser(user);
+            return { success: true, error: null };
+        } catch (error) {
+            return { success: false, error: formatError(error) };
         }
     }
 };

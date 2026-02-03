@@ -1,22 +1,49 @@
+import { getAuth, sendPasswordResetEmail } from 'firebase/auth';
 import { useState } from 'react';
 import { FaArrowLeft, FaEnvelope } from 'react-icons/fa';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import AuthLayout from './AuthLayout';
 
 const AdminForgotPassword = () => {
-    const navigate = useNavigate();
     const [email, setEmail] = useState('');
     const [isLoading, setIsLoading] = useState(false);
-    const [isSent, setIsSent] = useState(false);
+    const [message, setMessage] = useState({ type: '', text: '' });
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         setIsLoading(true);
-        // Simulate password reset email for admin
-        setTimeout(() => {
+        setMessage({ type: '', text: '' });
+
+        if (email !== 'eduverseofficial17@gmail.com') {
+             setMessage({ 
+                type: 'error', 
+                text: "This form is restricted to the Administrator account (eduverseofficial17@gmail.com)."
+            });
             setIsLoading(false);
-            setIsSent(true);
-        }, 1500);
+            return;
+        }
+
+        const auth = getAuth();
+        
+        try {
+            await sendPasswordResetEmail(auth, email);
+            setMessage({ 
+                type: 'success', 
+                text: `Recovery instructions sent to ${email}. Check your inbox.` 
+            });
+        } catch (error) {
+            console.error("Password reset error:", error);
+            let errorMsg = "Failed to send reset email. Please text again.";
+            if (error.code === 'auth/user-not-found') errorMsg = "No admin account found with this email.";
+            if (error.code === 'auth/invalid-email') errorMsg = "Invalid email address.";
+            
+            setMessage({ 
+                type: 'error', 
+                text: errorMsg
+            });
+        } finally {
+            setIsLoading(false);
+        }
     };
 
     return (
@@ -25,10 +52,10 @@ const AdminForgotPassword = () => {
             subtitle="Reset your administrative access credentials."
             isAdmin={true}
         >
-            {isSent ? (
+            {message.type === 'success' ? (
                 <div className="text-center">
                     <div className="auth-alert success mb-4">
-                        Recovery instructions sent to <strong>{email}</strong>.
+                        {message.text}
                     </div>
                     <Link to="/auth/admin/login" className="auth-btn" style={{display: 'inline-block', textDecoration: 'none'}}>
                         Back to Admin Login
@@ -36,6 +63,12 @@ const AdminForgotPassword = () => {
                 </div>
             ) : (
                 <form onSubmit={handleSubmit}>
+                    {message.type === 'error' && (
+                        <div className="alert alert-danger text-center mb-3">
+                            {message.text}
+                        </div>
+                    )}
+
                     <div className="form-group">
                         <label className="form-label">Admin Email</label>
                         <div className="input-wrapper">

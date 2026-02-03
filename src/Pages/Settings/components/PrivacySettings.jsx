@@ -18,6 +18,18 @@ const PrivacySettings = () => {
         dispatch(updatePrivacy({ retentionPeriod: e.target.value }));
     };
 
+    const handleDeleteAccount = async () => {
+        if (window.confirm("Are you SURE you want to delete your account? This cannot be undone.")) {
+            try {
+                await dispatch(deleteUserAccount()).unwrap();
+                // Redirect happens in App via user status or router, but here we can just alert
+                alert("Account deleted.");
+            } catch (err) {
+                alert("Failed to delete account. Please login again and try.");
+            }
+        }
+    };
+
     return (
         <div className="settings-content-wrapper">
              <div className="settings-section-header d-flex justify-content-between align-items-center">
@@ -118,7 +130,7 @@ const PrivacySettings = () => {
                                     <p className="text-danger text-opacity-75 small mb-0">Permanently remove your account and all data</p>
                                 </div>
                             </div>
-                            <button className="btn btn-sm btn-danger">Delete Account</button>
+                            <button className="btn btn-sm btn-danger" onClick={handleDeleteAccount}>Delete Account</button>
                         </div>
                     </div>
                 </div>

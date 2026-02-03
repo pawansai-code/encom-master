@@ -23,7 +23,7 @@ const ProfileSettings = () => {
     const mapUserToForm = (u) => {
         if (!u) return defaultUser;
         return {
-            name: u.name || '',
+            name: u.name || u.data?.name || '',
             // Check top level, then data.username, then fallback to name, then empty string
             username: u.username || u.data?.username || u.name || '',
             email: u.email || '',
@@ -37,7 +37,7 @@ const ProfileSettings = () => {
     const [formData, setFormData] = useState(mapUserToForm(userProfile));
     const [photoFile, setPhotoFile] = useState(null);
     const [previewUrl, setPreviewUrl] = useState(
-        userProfile?.photoURL || userProfile?.avatar || 'https://cdn-icons-png.flaticon.com/512/149/149071.png'
+        userProfile?.photoURL || userProfile?.avatar || userProfile?.data?.avatar || 'https://cdn-icons-png.flaticon.com/512/149/149071.png'
     );
     const [isAdmin, setIsAdmin] = useState(false);
     const [message, setMessage] = useState('');
@@ -47,8 +47,8 @@ const ProfileSettings = () => {
     // Sync local state when redux state changes
     useEffect(() => {
         if (userProfile) {
-            setFormData(mapUserToForm(userProfile));
-            setPreviewUrl(userProfile.photoURL || userProfile.avatar || 'https://cdn-icons-png.flaticon.com/512/149/149071.png');
+             setFormData(mapUserToForm(userProfile));
+            setPreviewUrl(userProfile.photoURL || userProfile.avatar || userProfile.data?.avatar || 'https://cdn-icons-png.flaticon.com/512/149/149071.png');
         }
     }, [userProfile]);
 
@@ -76,6 +76,17 @@ const ProfileSettings = () => {
             setPhotoFile(null); // Reset file after successful upload
         } catch (err) {
             setMessage('Failed to update profile.');
+            setTimeout(() => setMessage(''), 3000);
+        }
+    };
+
+    const handleVerifyEmail = async () => {
+        try {
+            await dispatch(verifyUserEmail()).unwrap();
+            setMessage('Verification email sent! Please check your inbox.');
+            setTimeout(() => setMessage(''), 5000);
+        } catch (err) {
+            setMessage(err || 'Failed to send verification email.');
             setTimeout(() => setMessage(''), 3000);
         }
     };
@@ -200,7 +211,7 @@ const ProfileSettings = () => {
                                         <FaCheckCircle className="me-2" /> Verified
                                     </span>
                                 ) : (
-                                    <button className="btn btn-warning btn-sm text-nowrap">Verify Now</button>
+                                    <button className="btn btn-warning btn-sm text-nowrap" onClick={handleVerifyEmail}>Verify Now</button>
                                 )}
                             </div>
                         </div>

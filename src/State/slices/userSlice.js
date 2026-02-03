@@ -4,7 +4,7 @@ import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
 import { auth, storage } from '../../firebase';
 import { authService } from '../../Services/authService';
 
-const defaultUserState = {
+export const defaultUserState = {
     streaks: {
         login: { current: 1, longest: 5, lastActive: new Date().toISOString(), history: {} },
         tools: { current: 0, longest: 0, lastActive: null, history: {} },
@@ -55,22 +55,26 @@ const mockUser = {
 
 // Mock Login - Just for structural integrity if needed
 // Async Thunks
+const ADMIN_EMAIL = "eduverseofficial17@gmail.com";
+
 export const loginUser = createAsyncThunk(
     'user/login',
     async ({ email, password }, { rejectWithValue }) => {
         const { user, error } = await authService.login(email, password);
         if (error) return rejectWithValue(error);
 
+        const role = user.email === ADMIN_EMAIL ? 'admin' : 'student';
+
         // Merge firebase user with default app state structure
         return {
             uid: user.uid,
             email: user.email,
-            role: 'student',
+            role: role,
             data: {
                 ...defaultUserState,
-                name: user.displayName || 'Student',
+                name: user.displayName || (role === 'admin' ? 'Admin' : 'Student'),
                 email: user.email,
-                role: 'student'
+                role: role
             }
         };
     }
@@ -82,15 +86,17 @@ export const googleLoginUser = createAsyncThunk(
         const { user, error } = await authService.googleLogin();
         if (error) return rejectWithValue(error);
 
+        const role = user.email === ADMIN_EMAIL ? 'admin' : 'student';
+
         return {
             uid: user.uid,
             email: user.email,
-            role: 'student',
+            role: role,
             data: {
                 ...defaultUserState,
-                name: user.displayName || 'Student',
+                name: user.displayName || (role === 'admin' ? 'Admin' : 'Student'),
                 email: user.email,
-                role: 'student',
+                role: role,
                 avatar: user.photoURL
             }
         };
@@ -103,15 +109,17 @@ export const signupUser = createAsyncThunk(
         const { user, error } = await authService.signUp(email, password, name);
         if (error) return rejectWithValue(error);
 
+        const role = user.email === ADMIN_EMAIL ? 'admin' : 'student';
+
         return {
             uid: user.uid,
             email: user.email,
-            role: 'student',
+            role: role,
             data: {
                 ...defaultUserState,
-                name: user.displayName || name || 'Student',
+                name: user.displayName || name || (role === 'admin' ? 'Admin' : 'Student'),
                 email: user.email,
-                role: 'student'
+                role: role
             }
         };
     }
@@ -194,6 +202,38 @@ export const saveUserProfile = createAsyncThunk(
     }
 );
 
+// Verify Email
+export const verifyUserEmail = createAsyncThunk(
+    'user/verifyEmail',
+    async (_, { rejectWithValue }) => {
+        if (!auth.currentUser) return rejectWithValue("No user logged in.");
+        const { error } = await authService.verifyEmail(auth.currentUser);
+        if (error) return rejectWithValue(error);
+        return { success: true };
+    }
+);
+
+// Reset Password
+export const resetUserPassword = createAsyncThunk(
+    'user/resetPassword',
+    async (email, { rejectWithValue }) => {
+        const { error } = await authService.sendPasswordReset(email);
+        if (error) return rejectWithValue(error);
+        return { success: true };
+    }
+);
+
+// Delete Account
+export const deleteUserAccount = createAsyncThunk(
+    'user/deleteAccount',
+    async (_, { rejectWithValue }) => {
+        if (!auth.currentUser) return rejectWithValue("No user logged in.");
+        const { error } = await authService.deleteAccount(auth.currentUser);
+        if (error) return rejectWithValue(error);
+        return null; // Return null on success
+    }
+);
+
 // Update User Activity - Mock Version (Frontend Only)
 export const updateActivity = createAsyncThunk(
     'user/updateActivity',
@@ -218,8 +258,8 @@ export const updateActivity = createAsyncThunk(
 );
 
 const initialState = {
-    profile: mockUser, // Start LOGGED IN by default
-    status: 'succeeded',
+    profile: null, // Start LOGGED OUT by default to allow real Auth to take over
+    status: 'loading', // Start loading until Auth Check completes
     error: null,
     privacy: {
         searchVisibility: true,
@@ -349,6 +389,11 @@ const userSlice = createSlice({
                         ...(state.profile.data.activityLog || [])
                     ];
                 }
+            })
+            // Delete Account
+            .addCase(deleteUserAccount.fulfilled, (state) => {
+                state.profile = null;
+                state.status = 'idle';
             });
     }
 });

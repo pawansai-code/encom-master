@@ -61,7 +61,7 @@ export const TOOLS_CONFIG = [
         name: 'AI Assistant',
         description: 'Chat with our advanced AI companion.',
         icon: FaRobot,
-        path: '/tools/ai-chat',
+        path: '/chatbot',
         category: 'AI',
         accentColor: '#A06CD5'
     },

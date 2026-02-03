@@ -1,9 +1,11 @@
+import { onAuthStateChanged } from 'firebase/auth';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Route, Routes } from 'react-router-dom';
-import ChatbotFloatingIcon from './Components/Common/ChatbotFloatingIcon';
+
 import NinjaLoader from './Components/Common/NinjaLoader';
-import { setLoading } from './State/slices/userSlice';
+import { auth } from './firebase';
+import { clearUser, defaultUserState, setLoading, setUser } from './State/slices/userSlice';
 
 
 import AboutPage from './Pages/About/AboutPage';
@@ -33,6 +35,9 @@ import UserLogin from './Pages/Auth/UserLogin';
 import UserSignup from './Pages/Auth/UserSignup';
 import VerifyEmail from './Pages/Auth/VerifyEmail';
 
+import AdminDashboard from './Pages/Admin/AdminDashboard';
+
+
 
 function App() {
   const dispatch = useDispatch();
@@ -40,8 +45,40 @@ function App() {
   const loading = status === 'loading';
 
   useEffect(() => {
-    // Simulate initial loading if needed, or just set loading to false immediately
-     dispatch(setLoading(false));
+    // Listen for Firebase Auth changes
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+        if (currentUser) {
+            // User is signed in, restore Redux state
+            // We reconstruct the user object to match what userSlice expects
+            const role = currentUser.email === 'eduverseofficial17@gmail.com' ? 'admin' : 'student';
+            
+            // Merge with default state to ensure game data exists
+            const restoredUser = {
+                uid: currentUser.uid,
+                email: currentUser.email,
+                role: role,
+                data: {
+                    ...defaultUserState, // Defaults first
+                    // Override with Auth data
+                    name: currentUser.displayName || (role === 'admin' ? 'Admin' : 'Student'),
+                    email: currentUser.email,
+                    avatar: currentUser.photoURL,
+                    role: role,
+                    // If we had a database, we would fetch and merge here.
+                    // For now, preservation of complex state across reloads requires a DB.
+                    // This "reset to default" on reload is a known limitation without a DB.
+                    // But at least it won't crash.
+                }
+            };
+            dispatch(setUser(restoredUser));
+        } else {
+            // User is signed out
+            dispatch(clearUser());
+        }
+        dispatch(setLoading(false));
+    });
+
+    return () => unsubscribe();
   }, [dispatch]);
 
 
@@ -59,6 +96,7 @@ function App() {
             
             {/* Dashboard and Authenticated Features */}
             <Route path="/dashboard" element={<DashboardPage />} />
+            <Route path="/admin/dashboard" element={<AdminDashboard />} />
             <Route path="/settings" element={<SettingsPage />} />
             <Route path="/achievements" element={<AchievementsPage />} />
             
@@ -85,7 +123,7 @@ function App() {
             {/* Fallback */}
             <Route path="*" element={<NotFoundPage />} />
         </Routes>
-        <ChatbotFloatingIcon />
+
     </>
   );
 }

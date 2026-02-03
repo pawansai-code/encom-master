@@ -12,7 +12,7 @@ import {
 
 // --- Heatmap Calendar ---
 // --- Heatmap Calendar ---
-export const HeatmapCalendar = ({ onDateClick, selectedDate }) => {
+export const HeatmapCalendar = ({ onDateClick, selectedDate, minimal = false }) => {
     const entries = useSelector(state => state.journal.entries);
     
     // Generate last 35 days (5 weeks) for a better grid
@@ -43,7 +43,7 @@ export const HeatmapCalendar = ({ onDateClick, selectedDate }) => {
         <div className="journal-card">
             <div className="d-flex justify-content-between align-items-center mb-3">
                 <h5 className="fw-bold mb-0">Activity Log</h5>
-                <span className="badge bg-secondary bg-opacity-25 text-secondary">Last 35 Days</span>
+                {!minimal && <span className="badge bg-secondary bg-opacity-25 text-secondary">Last 35 Days</span>}
             </div>
             <div className="heatmap-grid" style={{ gridTemplateColumns: 'repeat(7, 1fr)' }}>
                 {['S','M','T','W','T','F','S'].map((d, i) => (
@@ -61,16 +61,18 @@ export const HeatmapCalendar = ({ onDateClick, selectedDate }) => {
                     </div>
                 ))}
             </div>
-            <div className="d-flex justify-content-between mt-4 small text-secondary align-items-center">
-                <span className="xsmall">Less</span>
-                <div className="d-flex gap-1">
-                    <div className="heatmap-cell" style={{width: 12, height: 12, fontSize: 0, minHeight: 0}}></div>
-                    <div className="heatmap-cell heatmap-level-1" style={{width: 12, height: 12, fontSize: 0, minHeight: 0}}></div>
-                    <div className="heatmap-cell heatmap-level-2" style={{width: 12, height: 12, fontSize: 0, minHeight: 0}}></div>
-                    <div className="heatmap-cell heatmap-level-3" style={{width: 12, height: 12, fontSize: 0, minHeight: 0}}></div>
+            {!minimal && (
+                <div className="d-flex justify-content-between mt-4 small text-secondary align-items-center">
+                    <span className="xsmall">Less</span>
+                    <div className="d-flex gap-1">
+                        <div className="heatmap-cell" style={{width: 12, height: 12, fontSize: 0, minHeight: 0}}></div>
+                        <div className="heatmap-cell heatmap-level-1" style={{width: 12, height: 12, fontSize: 0, minHeight: 0}}></div>
+                        <div className="heatmap-cell heatmap-level-2" style={{width: 12, height: 12, fontSize: 0, minHeight: 0}}></div>
+                        <div className="heatmap-cell heatmap-level-3" style={{width: 12, height: 12, fontSize: 0, minHeight: 0}}></div>
+                    </div>
+                    <span className="xsmall">More</span>
                 </div>
-                <span className="xsmall">More</span>
-            </div>
+            )}
         </div>
     );
 };

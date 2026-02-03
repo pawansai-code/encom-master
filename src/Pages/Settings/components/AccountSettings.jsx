@@ -7,10 +7,27 @@ import { terminateAllOtherSessions, terminateSession, toggleTwoFactor } from '..
 const AccountSettings = () => {
     const dispatch = useDispatch();
     const account = useSelector((state) => state.user.account);
+    const user = useSelector(selectUser);
     const [isAdmin, setIsAdmin] = useState(false);
+    const [message, setMessage] = useState('');
+
+    const handlePasswordReset = async () => {
+        if (!user || !user.email) return;
+        try {
+            await dispatch(resetUserPassword(user.email)).unwrap();
+            setMessage(`Password reset email sent to ${user.email}`);
+            setTimeout(() => setMessage(''), 5000);
+        } catch (err) {
+            setMessage('Failed to send reset email.');
+            setTimeout(() => setMessage(''), 3000);
+        }
+    };
 
     return (
         <div className="settings-content-wrapper">
+            {message && (
+                <div className="alert alert-info m-4 mb-0">{message}</div>
+            )}
             <div className="settings-section-header d-flex justify-content-between align-items-center">
                 <div>
                     <h3 className="fw-bold text-white mb-1">Account & Security</h3>
@@ -37,15 +54,15 @@ const AccountSettings = () => {
                         <div className="col-md-6">
                             <label className="text-secondary small mb-2">Email Address</label>
                             <div className="d-flex gap-2">
-                                <input type="email" value="ninja@eduverse.com" className="settings-input" disabled />
-                                <button className="btn btn-outline-light">Change</button>
+                                <input type="email" value={user?.email || ''} className="settings-input" disabled />
+                                <button className="btn btn-outline-light" disabled>Change</button>
                             </div>
                         </div>
                         <div className="col-md-6">
                             <label className="text-secondary small mb-2">Password</label>
                             <div className="d-flex gap-2">
                                 <input type="password" value="********" className="settings-input" disabled />
-                                <button className="btn btn-outline-light">Change</button>
+                                <button className="btn btn-outline-light" onClick={handlePasswordReset}>Change</button>
                             </div>
                         </div>
                     </div>

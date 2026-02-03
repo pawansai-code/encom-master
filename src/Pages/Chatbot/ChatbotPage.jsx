@@ -4,7 +4,6 @@ import { fetchChatHistory, fetchChatSettings } from '../../State/slices/chatSlic
 import './ChatbotPage.css';
 import ChatHistory from './components/ChatHistory';
 import ChatInterface from './components/ChatInterface';
-import ChatSettings from './components/ChatSettings';
 
 const ChatbotPage = () => {
     const dispatch = useDispatch();
@@ -25,9 +24,6 @@ const ChatbotPage = () => {
             <main className="chatbot-main">
                 <ChatInterface />
             </main>
-            <aside className="chatbot-settings-panel">
-                <ChatSettings />
-            </aside>
         </div>
     );
 };
