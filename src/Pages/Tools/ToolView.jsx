@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Link, useParams } from 'react-router-dom';
 import HomeNavbar from '../../Components/Homepage/HomeNavbar';
 import { recordToolUsage, toggleFavorite } from '../../State/slices/toolSlice';
+import { CGPACalculatorTool, GPACalculatorTool } from './components/GradeTools';
 import {
     AIChatTool,
     CalculatorTool,
@@ -38,6 +39,8 @@ const ToolView = () => {
 
     const renderTool = () => {
         switch (toolId) {
+            case 'gpa-calculator': return <GPACalculatorTool />;
+            case 'cgpa-calculator': return <CGPACalculatorTool />;
             case 'calculator': return <CalculatorTool />;
             case 'scientific-calculator': return <ScientificCalculatorTool />;
             case 'summarizer': return <SummarizerTool />;

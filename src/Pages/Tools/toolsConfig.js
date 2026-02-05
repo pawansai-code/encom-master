@@ -4,13 +4,33 @@ import {
     FaExchangeAlt,
     FaFileAlt,
     FaFilePdf,
+    FaGraduationCap,
     FaImage,
     FaLanguage,
     FaRobot,
-    FaSearch
+    FaSearch,
+    FaUniversity
 } from 'react-icons/fa';
 
 export const TOOLS_CONFIG = [
+    {
+        id: 'gpa-calculator',
+        name: 'GPA Calculator',
+        description: 'Calculate your Grade Point Average.',
+        icon: FaGraduationCap,
+        path: '/tools/gpa-calculator',
+        category: 'Education',
+        accentColor: '#FFD166'
+    },
+    {
+        id: 'cgpa-calculator',
+        name: 'CGPA Calculator',
+        description: 'Calculate your Cumulative GPA.',
+        icon: FaUniversity,
+        path: '/tools/cgpa-calculator',
+        category: 'Education',
+        accentColor: '#06D6A0'
+    },
     {
         id: 'calculator',
         name: 'Calculator',
