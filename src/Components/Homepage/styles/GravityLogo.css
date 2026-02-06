@@ -64,3 +64,17 @@
 .gravity-char.animate {
     animation: fall-and-settle 1.5s cubic-bezier(0.25, 1, 0.5, 1) forwards;
 }
+
+/* Responsive Scaling */
+@media (max-width: 768px) {
+    .gravity-char {
+        font-size: 60px;
+    }
+}
+
+@media (max-width: 576px) {
+    .gravity-char {
+        font-size: 36px;
+        /* Fit on small screens */
+    }
+}
