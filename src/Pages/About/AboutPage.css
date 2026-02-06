@@ -342,4 +342,18 @@
 
     /* Adjust animations to be subtle or reduced motion if needed, 
        but standard CSS animations are fine on modern mobile */
+
+    /* Fix Lightning Effect on Mobile */
+    .lightning-bolt {
+        width: 80px;
+        /* Smaller bolt */
+        left: 50%;
+        /* Center it */
+        transform: translateX(-50%);
+    }
+
+    /* Ensure background fog doesn't cause scroll issues */
+    .about-page {
+        overflow-x: hidden;
+    }
 }
