@@ -1738,3 +1738,148 @@ body {
     padding: 15px;
     font-size: 18px;
 }
+
+/* =========================================
+   MOBILE RESPONSIVENESS (Max Width 576px)
+   ========================================= */
+@media (max-width: 576px) {
+
+    /* Navbar Adjustments */
+    .home-navbar {
+        height: 70px;
+        padding: 0 15px;
+    }
+
+    .logo-container .logo-text {
+        font-size: 20px;
+    }
+
+    .home-brand-icon {
+        font-size: 24px;
+    }
+
+    /* Hero Section Adjustments */
+    .hero-section {
+        padding-top: 100px;
+        min-height: auto;
+        /* Allow content to dictate height on small screens */
+        padding-bottom: 60px;
+    }
+
+    .hero-title {
+        font-size: 36px;
+        /* Smaller font for mobile */
+        margin-bottom: 15px;
+    }
+
+    .hero-subtitle {
+        font-size: 16px;
+        margin-bottom: 30px;
+        padding: 0 10px;
+    }
+
+    .hero-buttons {
+        flex-direction: column;
+        width: 100%;
+        gap: 15px;
+    }
+
+    .get-started-btn,
+    .learn-more-btn {
+        width: 100%;
+        /* Full width buttons */
+        padding: 12px 20px;
+        font-size: 16px;
+    }
+
+    /* Feature Cards Adjustments */
+    .features-section {
+        padding: 60px 15px;
+    }
+
+    .feature-card {
+        padding: 30px 20px;
+        margin-bottom: 20px;
+    }
+
+    .feature-icon-wrapper {
+        width: 60px;
+        height: 60px;
+        font-size: 24px;
+    }
+
+    .feature-title {
+        font-size: 24px;
+    }
+
+    .feature-description {
+        font-size: 14px;
+        max-width: 100%;
+    }
+
+    /* Carousel Adjustments */
+    .home-carousel-section {
+        padding: 40px 15px;
+    }
+
+    .carousel-wrapper {
+        height: 500px;
+        /* Taller to fit vertical content */
+        border-radius: 12px;
+    }
+
+    .carousel-slide-item {
+        padding: 0 20px;
+    }
+
+    .slide-title {
+        font-size: 28px;
+    }
+
+    .slide-description {
+        font-size: 16px;
+    }
+
+    .carousel-control {
+        width: 36px;
+        height: 36px;
+        font-size: 14px;
+    }
+
+    .carousel-control.prev {
+        left: 10px;
+    }
+
+    .carousel-control.next {
+        right: 10px;
+    }
+
+    /* Footer Adjustments */
+    .home-footer {
+        padding-top: 40px;
+    }
+
+    .footer-logo h2 {
+        font-size: 24px;
+    }
+
+    .footer-logo p {
+        font-size: 13px;
+        margin-bottom: 30px;
+    }
+
+    .social-links {
+        gap: 15px;
+    }
+
+    .social-icon {
+        width: 40px;
+        height: 40px;
+        font-size: 16px;
+    }
+
+    /* General Text Adjustments */
+    p {
+        font-size: 14px;
+    }
+}
