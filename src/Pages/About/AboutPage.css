@@ -285,3 +285,61 @@
         font-size: 2rem;
     }
 }
+
+/* Mobile Devices (Max width 576px) */
+@media (max-width: 576px) {
+    .about-page {
+        padding-top: 60px;
+    }
+
+    .about-container {
+        padding: 15px;
+    }
+
+    /* Hero Section */
+    .about-hero {
+        padding: 40px 0 20px;
+    }
+
+    .hero-title {
+        font-size: 2.5rem;
+        /* Smaller title */
+        margin-bottom: 1rem;
+    }
+
+    .hero-subtitle {
+        font-size: 1.1rem;
+        line-height: 1.5;
+    }
+
+    /* Story Section */
+    .story-section {
+        padding: 20px 0 40px;
+    }
+
+    .story-card {
+        padding: 1.5rem;
+        /* Reduced padding */
+        border-radius: 16px;
+    }
+
+    .story-content h2 {
+        font-size: 1.8rem;
+        margin-bottom: 1rem;
+    }
+
+    .story-content h3 {
+        font-size: 1.4rem;
+        margin-top: 1.5rem;
+    }
+
+    .story-text {
+        font-size: 1rem;
+        line-height: 1.6;
+        text-align: left;
+        /* Easier to read on mobile than justify */
+    }
+
+    /* Adjust animations to be subtle or reduced motion if needed, 
+       but standard CSS animations are fine on modern mobile */
+}

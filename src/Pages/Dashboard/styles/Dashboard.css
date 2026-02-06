@@ -131,3 +131,73 @@
     background: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMCIgaGVpZ2h0PSIyMCIgdmlld0JveD0iMCAwIDIwIDIwIiBmaWxsPSJub25lIiBzdHJva2U9InJnYmEoMjU1LDI1NSwyNTUsMC4wNSkiIHN0cm9rZS13aWR0aD0iMSI+PHBhdGggZD0iTTAgMjBMMjAgMEgwVjIwWiIvPjwvc3ZnPg==');
     opacity: 0.3;
 }
+
+/* =========================================
+   RESPONSIVE DESIGN
+   ========================================= */
+
+/* Tablet (Max width 992px) */
+@media (max-width: 992px) {
+    .dashboard-container {
+        padding-top: 80px;
+    }
+}
+
+/* Mobile (Max width 768px) */
+@media (max-width: 768px) {
+    .stat-card {
+        padding: 20px;
+    }
+
+    .stat-icon {
+        width: 44px;
+        height: 44px;
+        font-size: 20px;
+    }
+}
+
+/* Small Mobile (Max width 576px) */
+@media (max-width: 576px) {
+    .dashboard-container {
+        padding-top: 70px;
+        /* Reduced top padding */
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+
+    /* Stack grid elements if they aren't already stacked by Bootstrap classes 
+       (Assuming Bootstrap grid usage in JSX, but enforcing spacing here) */
+
+    .stat-card {
+        padding: 16px;
+        /* Compact padding */
+        margin-bottom: 15px;
+    }
+
+    .action-card {
+        margin-bottom: 15px;
+    }
+
+    .action-icon-wrapper {
+        width: 56px;
+        height: 56px;
+        font-size: 24px;
+        margin-bottom: 12px;
+    }
+
+    h2 {
+        font-size: 1.5rem !important;
+        /* Force smaller size for headings */
+    }
+
+    p {
+        font-size: 0.9rem !important;
+    }
+
+    /* Adjust container padding from bootstrap classes if needed */
+    .container,
+    .container-fluid {
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+}

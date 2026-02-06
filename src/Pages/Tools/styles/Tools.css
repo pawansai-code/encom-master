@@ -147,3 +147,74 @@
 .form-control::placeholder {
     color: rgba(255, 255, 255, 0.4);
 }
+
+/* =========================================
+   RESPONSIVE DESIGN
+   ========================================= */
+
+/* Tablet & Mobile (Max width 992px) */
+@media (max-width: 992px) {
+    .tool-workspace {
+        min-height: 500px;
+        /* Reduced height */
+    }
+}
+
+/* Mobile (Max width 768px) */
+@media (max-width: 768px) {
+    .tools-header h1 {
+        font-size: 2rem;
+    }
+
+    .tool-card {
+        padding: 1.2rem;
+    }
+
+    .tool-icon-wrapper {
+        width: 50px;
+        height: 50px;
+        font-size: 1.5rem;
+    }
+}
+
+/* Small Mobile (Max width 576px) */
+@media (max-width: 576px) {
+    .tools-page-container {
+        padding-top: 80px;
+        /* Header space */
+    }
+
+    .tools-header {
+        margin-bottom: 2rem;
+        text-align: center;
+    }
+
+    .tools-header h1 {
+        font-size: 1.8rem;
+    }
+
+    /* Stack Tool Cards */
+    .row>[class*='col-'] {
+        margin-bottom: 20px;
+        /* Spacing between stacked items */
+    }
+
+    .tool-card {
+        padding: 1.5rem;
+        /* Ensure max height isn't an issue */
+    }
+
+    .tool-view-container {
+        padding: 10px 0;
+    }
+
+    /* Workspace Adjustments */
+    .tool-workspace {
+        min-height: auto;
+        padding: 1.5rem;
+    }
+
+    .tool-sidebar {
+        margin-top: 20px;
+    }
+}
