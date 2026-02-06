@@ -152,6 +152,7 @@
     from {
         transform: rotate(0deg);
     }
+
     to {
         transform: rotate(360deg);
     }
@@ -159,4 +160,40 @@
 
 .animate-spin {
     animation: spin 1s linear infinite;
+}
+
+/* =========================================
+   RESPONSIVE DESIGN
+   ========================================= */
+
+@media (max-width: 992px) {
+    .settings-sidebar {
+        height: auto;
+        border-right: none;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        margin-bottom: 20px;
+    }
+
+    .settings-container .row {
+        flex-direction: column;
+    }
+}
+
+@media (max-width: 576px) {
+    .settings-nav-item {
+        padding: 10px 15px;
+        font-size: 0.9rem;
+    }
+
+    .settings-section-header {
+        padding: 15px;
+    }
+
+    .settings-card {
+        padding: 15px;
+    }
+
+    .settings-input {
+        padding: 10px;
+    }
 }

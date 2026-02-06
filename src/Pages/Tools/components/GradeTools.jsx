@@ -72,8 +72,10 @@ export const GPACalculatorTool = () => {
                     <tbody>
                         {courses.map((course, index) => (
                             <tr key={course.id}>
-                                <td className="align-middle text-white">{index + 1}</td>
-                                <td>
+                                <td className="align-middle text-white" data-label="Course #">
+                                    <span className="d-lg-none me-2">Course</span>{index + 1}
+                                </td>
+                                <td data-label="Credits">
                                     <input
                                         type="number"
                                         className="form-control bg-dark text-white border-secondary"
@@ -82,7 +84,7 @@ export const GPACalculatorTool = () => {
                                         onChange={(e) => handleChange(course.id, 'credits', e.target.value)}
                                     />
                                 </td>
-                                <td>
+                                <td data-label="Grade Points">
                                     <input
                                         type="number"
                                         className="form-control bg-dark text-white border-secondary"
@@ -91,7 +93,7 @@ export const GPACalculatorTool = () => {
                                         onChange={(e) => handleChange(course.id, 'gradePoints', e.target.value)}
                                     />
                                 </td>
-                                <td>
+                                <td data-label="Actions" className="text-end">
                                     <button 
                                         className="btn btn-outline-danger btn-sm"
                                         onClick={() => removeCourse(course.id)}

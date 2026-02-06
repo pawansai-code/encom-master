@@ -1767,9 +1767,15 @@ body {
     }
 
     .hero-title {
-        font-size: 36px;
-        /* Smaller font for mobile */
-        margin-bottom: 15px;
+        font-size: 42px;
+        /* Increased from 36px for better visibility */
+        line-height: 1.2;
+        margin-bottom: 20px;
+        position: relative;
+        z-index: 2;
+        /* Ensure above background elements */
+        padding: 0 10px;
+        /* Prevent text touching edges */
     }
 
     .hero-subtitle {
