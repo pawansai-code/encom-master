@@ -50,16 +50,15 @@ export const ScientificCalculatorTool = () => {
         <div className="d-flex flex-column align-items-center">
             <input 
                 type="text" 
-                className="form-control mb-3 text-end fs-2 bg-dark text-white border-secondary" 
+                className="form-control mb-3 text-end fs-2 bg-dark text-white border-secondary calc-display" 
                 value={display} 
                 readOnly 
-                style={{ maxWidth: '400px' }}
             />
-            <div className="d-grid gap-2" style={{ gridTemplateColumns: 'repeat(5, 1fr)', maxWidth: '400px' }}>
+            <div className="d-grid gap-2 calc-grid-5">
                 {buttons.map(btn => (
                     <button 
                         key={btn} 
-                        className={`btn ${btn === 'C' || btn === 'DEL' ? 'btn-danger' : btn === '=' ? 'btn-primary' : 'btn-secondary'} p-3 fw-bold`}
+                        className={`btn ${btn === 'C' || btn === 'DEL' ? 'btn-danger' : btn === '=' ? 'btn-primary' : 'btn-secondary'} fw-bold calc-btn`}
                         style={btn === '=' ? { backgroundColor: 'var(--tool-primary)', borderColor: 'var(--tool-primary)', color: 'white' } : {}}
                         onClick={() => handleClick(btn)}
                     >
@@ -101,16 +100,15 @@ export const CalculatorTool = () => {
         <div className="d-flex flex-column align-items-center">
             <input 
                 type="text" 
-                className="form-control mb-3 text-end fs-2 bg-dark text-white border-secondary" 
+                className="form-control mb-3 text-end fs-2 bg-dark text-white border-secondary calc-display" 
                 value={display} 
                 readOnly 
-                style={{ maxWidth: '300px' }}
             />
-            <div className="d-grid gap-2" style={{ gridTemplateColumns: 'repeat(4, 1fr)', maxWidth: '300px' }}>
+            <div className="d-grid gap-2 calc-grid-4">
                 {buttons.map(btn => (
                     <button 
                         key={btn} 
-                        className={`btn ${btn === 'C' ? 'btn-danger' : 'btn-secondary'} p-3 fw-bold`}
+                        className={`btn ${btn === 'C' ? 'btn-danger' : 'btn-secondary'} fw-bold calc-btn`}
                         style={btn === '=' ? { backgroundColor: 'var(--tool-primary)', borderColor: 'var(--tool-primary)', color: 'white' } : {}}
                         onClick={() => handleClick(btn)}
                     >
@@ -362,7 +360,7 @@ export const FileTool = ({ type }) => {
 
     return (
         <div className="text-center py-5">
-            <div className="border border-dashed border-secondary rounded p-5 mb-4" style={{ borderStyle: 'dashed' }}>
+            <div className="file-drop-zone border border-dashed border-secondary rounded mb-4" style={{ borderStyle: 'dashed' }}>
                 <input type="file" className="d-none" id="fileInput" onChange={handleFile} />
                 <label htmlFor="fileInput" className="btn btn-outline-primary btn-lg" style={{ color: 'var(--tool-primary)', borderColor: 'var(--tool-primary)' }}>
                    {file ? 'Change File' : 'Select File'}

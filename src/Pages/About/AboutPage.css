@@ -348,8 +348,11 @@
         width: 80px;
         /* Smaller bolt */
         left: 50%;
-        /* Center it */
-        transform: translateX(-50%);
+        /* Center position */
+        margin-left: -40px;
+        /* Center alignment (half of width) to avoid transform conflict with animation */
+        transform: none;
+        /* Reset static transform, let animation handle it */
     }
 
     /* Ensure background fog doesn't cause scroll issues */

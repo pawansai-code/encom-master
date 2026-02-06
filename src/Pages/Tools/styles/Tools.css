@@ -149,6 +149,55 @@
 }
 
 /* =========================================
+   TOOL COMPONENT STYLES
+   ========================================= */
+
+/* Calculator Grids */
+.calc-grid-5 {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    max-width: 400px;
+    width: 100%;
+}
+
+.calc-grid-4 {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    max-width: 300px;
+    width: 100%;
+}
+
+.calc-display {
+    width: 100%;
+    max-width: 400px;
+    /* Match calc-grid-5 */
+}
+
+/* Calculator Buttons */
+.calc-btn {
+    padding: 1rem;
+    font-size: 1.25rem;
+    transition: all 0.2s;
+}
+
+.calc-btn:active {
+    transform: scale(0.95);
+}
+
+/* File Drop Zone */
+.file-drop-zone {
+    padding: 3rem;
+    transition: all 0.3s;
+    background: rgba(255, 255, 255, 0.02);
+}
+
+.file-drop-zone:hover {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: var(--tool-primary);
+}
+
+
+/* =========================================
    RESPONSIVE DESIGN
    ========================================= */
 
@@ -156,7 +205,6 @@
 @media (max-width: 992px) {
     .tool-workspace {
         min-height: 500px;
-        /* Reduced height */
     }
 }
 
@@ -169,24 +217,12 @@
     .tool-card {
         padding: 1.2rem;
     }
-
-    .tool-icon-wrapper {
-        width: 50px;
-        height: 50px;
-        font-size: 1.5rem;
-    }
 }
 
 /* Small Mobile (Max width 576px) */
 @media (max-width: 576px) {
     .tools-page-container {
         padding-top: 80px;
-        /* Header space */
-    }
-
-    .tools-header {
-        margin-bottom: 2rem;
-        text-align: center;
     }
 
     .tools-header h1 {
@@ -196,102 +232,89 @@
     /* Stack Tool Cards */
     .row>[class*='col-'] {
         margin-bottom: 20px;
-        /* Spacing between stacked items */
     }
 
-    .tool-card {
-        padding: 1.5rem;
-        /* Ensure max height isn't an issue */
-    }
-
-    .tool-view-container {
-        padding: 10px 0;
-    }
-
-    /* Workspace Adjustments */
     .tool-workspace {
         min-height: auto;
-        padding: 1.5rem;
+        padding: 1.25rem;
+        /* Reduced padding */
     }
 
-    .tool-sidebar {
-        margin-top: 20px;
+    /* Tool Components on Mobile */
+    .calc-grid-5,
+    .calc-grid-4 {
+        gap: 6px !important;
+        max-width: 100%;
+        /* Allow full width of card */
     }
 
-    /* --- Tool Specific Mobile Optimizations --- */
-
-    /* 1. Grade Tools (GPA/CGPA) - Transform Tables to Cards */
-    .table-responsive table,
-    .table-responsive tbody,
-    .table-responsive tr,
-    .table-responsive td {
-        display: block;
-        width: 100%;
+    .calc-display {
+        font-size: 1.5rem !important;
+        max-width: 100%;
     }
 
+    .calc-btn {
+        padding: 12px 5px !important;
+        /* Less horizontal padding */
+        font-size: 1rem !important;
+    }
+
+    .file-drop-zone {
+        padding: 1.5rem !important;
+    }
+
+    /* Translator Tool Stacking */
+    .col-md-2.d-flex {
+        margin: 15px 0;
+        transform: rotate(90deg);
+        /* Rotate arrow to point down */
+    }
+
+    .col-md-2.d-flex button {
+        transform: rotate(-90deg);
+        /* Keep icon upright if needed, or let it point down */
+    }
+
+    /* Text Analyzer Columns */
+    .text-center .col-6 {
+        padding: 5px;
+    }
+
+    /* Grade Tools Mobile Card View */
     .table-responsive thead {
         display: none;
-        /* Hide headers */
     }
 
     .table-responsive tr {
-        margin-bottom: 20px;
-        background: rgba(255, 255, 255, 0.05);
+        display: block;
+        margin-bottom: 15px;
+        background: rgba(255, 255, 255, 0.03);
         border: 1px solid rgba(255, 255, 255, 0.1);
         border-radius: 12px;
         padding: 15px;
     }
 
     .table-responsive td {
-        padding: 10px 0;
-        text-align: right;
         display: flex;
         justify-content: space-between;
         align-items: center;
+        padding: 8px 0;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .table-responsive td:last-child {
+        border-bottom: none;
     }
 
     .table-responsive td::before {
         content: attr(data-label);
-        /* Add labels via CSS if needed, or rely on context */
-        float: left;
-        font-weight: bold;
+        font-weight: 600;
         color: var(--text-secondary);
+        margin-right: 10px;
     }
 
-    /* Input adjustments within "cards" */
-    .table-responsive td input {
+    .table-responsive input {
         width: 60% !important;
-        /* Give more space to input */
-    }
-
-    /* 2. Calculators */
-    .d-grid {
-        gap: 8px !important;
-        /* Tighter gap for mobile */
-    }
-
-    .d-grid button {
-        padding: 12px !important;
-        /* Smaller padding */
-        font-size: 1.1rem !important;
-    }
-
-    /* Scientific Calc Specific - 5 cols might be tight */
-    /* Only if we really need to change structure, but usually 5 cols fits on 360px+ if buttons are small.
-       Let's ensure the input display doesn't overflow */
-    .form-control.fs-2 {
-        font-size: 1.5rem !important;
-        /* Smaller text for result display */
-    }
-
-    /* 3. Text & Chat Tools */
-    .textarea-custom {
-        font-size: 16px;
-        /* Prevent zoom on iOS */
-    }
-
-    .input-group button {
-        padding-left: 15px;
-        padding-right: 15px;
+        font-size: 0.9rem;
     }
 }
