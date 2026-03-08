@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { FaArrowUp, FaCopy, FaRobot } from 'react-icons/fa';
+import { FaCopy, FaRobot, FaPaperPlane } from 'react-icons/fa';
 import { IoMdAttach, IoMdClose } from 'react-icons/io';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
@@ -32,17 +32,17 @@ const ChatInterface = () => {
             initialized.current = true;
 
             // Dispatching one by one to simulate conversation load
-            dispatch(addMessage({ 
-                sender: 'user', 
-                text: "Hi! What can you do?", 
-                timestamp: Date.now() - 2000 
+            dispatch(addMessage({
+                sender: 'user',
+                text: "Hi! What can you do?",
+                timestamp: Date.now() - 2000
             }));
 
             setTimeout(() => {
-                dispatch(addMessage({ 
-                    sender: 'bot', 
-                    text: "Welcome to Eduverse! I am your sophisticated AI Ninja Assistant. How can I optimize your learning journey today?", 
-                    timestamp: Date.now() 
+                dispatch(addMessage({
+                    sender: 'bot',
+                    text: "Welcome to Eduverse! I am your sophisticated AI Ninja Assistant. How can I optimize your learning journey today?",
+                    timestamp: Date.now()
                 }));
             }, 600);
         }
@@ -70,16 +70,16 @@ const ChatInterface = () => {
 
     const handleSend = (text = input) => {
         if (!text.trim() && !selectedFile) return;
-        
+
         // Optimistic UI update
-        const userMsg = { 
-            sender: 'user', 
-            text: text, 
+        const userMsg = {
+            sender: 'user',
+            text: text,
             timestamp: Date.now(),
-            attachment: selectedFile 
+            attachment: selectedFile
         };
         dispatch(addMessage(userMsg));
-        
+
         dispatch(sendMessageToBot({ message: text, conversationId: currentChatId })); // Backend ignores file for now
         setInput('');
         removeFile();
@@ -103,7 +103,7 @@ const ChatInterface = () => {
             <div className="chat-header">
 
                 <div className="chat-header-avatar">
-                   <FaRobot />
+                    <FaRobot />
                 </div>
                 <div className="chat-header-info">
                     <h3>Ninja Assistant</h3>
@@ -115,11 +115,11 @@ const ChatInterface = () => {
                 {messages.length === 0 ? (
                     <div className="welcome-container">
                         <div className="welcome-icon">
-                           <FaRobot />
+                            <FaRobot />
                         </div>
-                        <h3 style={{fontSize: '2rem', marginBottom: '1rem', color: '#ff2e63'}}>Hello, Ninja!</h3>
-                        <p style={{color:'#aaa', marginBottom:'2rem'}}>I'm here to help you navigate Eduverse. Ask me anything!</p>
-                        
+                        <h3 style={{ fontSize: '2rem', marginBottom: '1rem', color: '#ff2e63' }}>Hello, Ninja!</h3>
+                        <p style={{ color: '#aaa', marginBottom: '2rem' }}>I'm here to help you navigate Eduverse. Ask me anything!</p>
+
                         <div className="suggestion-chips">
                             {suggestions.map((s, i) => (
                                 <button key={i} className="chip" onClick={() => handleSend(s)}>
@@ -131,7 +131,7 @@ const ChatInterface = () => {
                 ) : (
                     messages.map((msg, idx) => (
                         <div key={idx} className={`message ${msg.sender} ${msg.attachment ? 'has-attachment' : ''}`}>
-                             {msg.sender === 'bot' && (
+                            {msg.sender === 'bot' && (
                                 <div className="bot-avatar-small">
                                     <FaRobot />
                                 </div>
@@ -152,7 +152,7 @@ const ChatInterface = () => {
                                 {msg.text && <div className="message-text">{msg.text}</div>}
                             </div>
                             <div className="message-meta">
-                                <span>{new Date(msg.timestamp).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</span>
+                                <span>{new Date(msg.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
                                 {msg.sender === 'bot' && (
                                     <button className="msg-action-btn" onClick={() => handleCopy(msg.text)} title="Copy">
                                         <FaCopy />
@@ -162,17 +162,17 @@ const ChatInterface = () => {
                         </div>
                     ))
                 )}
-                
+
                 {error && (
                     <div className="message bot error">
                         Error: {error}
                     </div>
                 )}
-                
+
                 {loading && (
                     <div className="message bot">
-                         <div className="bot-avatar-small"><FaRobot /></div>
-                         <div className="message-content-wrapper">
+                        <div className="bot-avatar-small"><FaRobot /></div>
+                        <div className="message-content-wrapper">
                             <span className="typing-dot"></span>
                             <span className="typing-dot"></span>
                             <span className="typing-dot"></span>
@@ -185,7 +185,7 @@ const ChatInterface = () => {
             {/* Floating Input Area (DeepSeek Style) */}
             <div className="chat-input-container">
                 <form className="chat-input-wrapper" onSubmit={(e) => { e.preventDefault(); handleSend(); }}>
-                    
+
                     {/* File Preview Area */}
                     {selectedFile && (
                         <div className="file-preview-area">
@@ -205,8 +205,8 @@ const ChatInterface = () => {
 
                     <div className="input-top-row">
                         <textarea
-                            className="chat-input" 
-                            placeholder="Message Ninja AI..." 
+                            className="chat-input"
+                            placeholder="Message Ninja AI..."
                             value={input}
                             onChange={(e) => setInput(e.target.value)}
                             onKeyDown={(e) => {
@@ -219,23 +219,23 @@ const ChatInterface = () => {
                             rows={1}
                         />
                     </div>
-                    
+
                     <div className="input-bottom-row">
                         <div className="input-left">
-                            <input 
-                                type="file" 
-                                ref={fileInputRef} 
-                                style={{display: 'none'}} 
+                            <input
+                                type="file"
+                                ref={fileInputRef}
+                                style={{ display: 'none' }}
                                 onChange={handleFileSelect}
                             />
                             <button type="button" className="action-icon-btn" title="Attach File" onClick={() => fileInputRef.current.click()}>
                                 <IoMdAttach size={24} />
                             </button>
                         </div>
-                        
+
                         <div className="input-right">
                             <button type="submit" className="send-btn" disabled={loading || (!input.trim() && !selectedFile)}>
-                                <FaArrowUp />
+                                <FaPaperPlane size={24} className="blade-icon" style={{ marginLeft: '-4px' }} />
                             </button>
                         </div>
                     </div>

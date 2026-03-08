@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
-const API_URL = 'http://localhost:8000/api/chat'; // Adjust based on actual backend port
+const API_URL = 'http://localhost:5000/api/chat'; // Adjust based on actual backend port
 
 const initialState = {
     currentConversationId: null,
@@ -29,7 +29,7 @@ export const sendMessageToBot = createAsyncThunk(
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ question: message }),
+                body: JSON.stringify({ message: message }),
             });
 
             if (!response.ok) {
@@ -45,7 +45,7 @@ export const sendMessageToBot = createAsyncThunk(
             }
 
             const data = await response.json();
-            const botReply = data.answer;
+            const botReply = data.response;
 
             // 3. Save to Firebase (User Message + Bot Reply) - REMOVED
             // Instead we just return the bot message to update the local state.

@@ -37,7 +37,7 @@ const AboutPage = () => {
     return (
         <div className="about-page">
             <HomeNavbar />
-            
+
             {/* Animated Background Layers */}
             <div className="ninja-bg">
                 <div className="fog-container"></div>
@@ -51,9 +51,9 @@ const AboutPage = () => {
                 )}
                 {/* Dynamic Shurikens */}
                 {[...Array(10)].map((_, i) => (
-                    <div 
-                        key={i} 
-                        className="particle" 
+                    <div
+                        key={i}
+                        className="particle"
                         style={{
                             left: `${Math.random() * 100}%`,
                             width: `${Math.random() * 30 + 10}px`,
@@ -76,7 +76,7 @@ const AboutPage = () => {
                 <section className="about-hero" style={{ transform: `translateY(${scrolled * 0.2}px)` }}>
                     <h1 className="hero-title">
                         <GiNinjaHead style={{ marginRight: '1rem' }} />
-                        The Eduverse Story
+                        The Encom Story
                     </h1>
                     <p className="hero-subtitle">
                         From the shadows of ignorance to the light of knowledge.
@@ -92,7 +92,7 @@ const AboutPage = () => {
                                 Long ago, in a digital landscape cluttered with dry textbooks and uninspiring lectures, a clan of rogue developers and educators gathered in the shadows. We realized that learning had lost its spark. The joy of discovery was being buried under mountains of rote memorization.
                             </p>
                             <p className="story-text">
-                                We envisioned a new world—<span className="highlight">The Eduverse</span>—where education wasn't a chore, but an adventure. A place where seeking knowledge made you a warrior, and mastering a skill made you a legend.
+                                We envisioned a new world—<span className="highlight">The ENCOM</span>—where education wasn't a chore, but an adventure. A place where seeking knowledge made you a warrior, and mastering a skill made you a legend.
                             </p>
 
                             <h3>The Struggles</h3>
@@ -105,13 +105,13 @@ const AboutPage = () => {
 
                             <h3>The Path Forward</h3>
                             <p className="story-text">
-                                Today, Eduverse stands as a beacon for digital ninjas everywhere. We continue to sharpen our tools, expand our libraries, and protect the sanctity of fun in learning. The journey is never over; there is always a higher belt to earn.
+                                Today, Encom stands as a beacon for digital ninjas everywhere. We continue to sharpen our tools, expand our libraries, and protect the sanctity of fun in learning. The journey is never over; there is always a higher belt to earn.
                             </p>
                         </div>
                     </div>
                 </section>
             </div>
-            
+
             <HomeFooter />
         </div>
     );

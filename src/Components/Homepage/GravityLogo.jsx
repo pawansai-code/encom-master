@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import './styles/GravityLogo.css';
 
 const GravityLogo = () => {
-    const text = "EDUVERSE";
+    const text = "ENCOM";
     const [startAnimation, setStartAnimation] = useState(false);
 
     useEffect(() => {

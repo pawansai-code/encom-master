@@ -15,16 +15,16 @@ const HomeFooter = () => {
         <footer className="home-footer">
             <div className="footer-content">
                 <div className="footer-logo">
-                    <h2>EDUVERSE</h2>
+                    <h2>ENCOM</h2>
                     <p>Where Academics Meet Adventure</p>
                 </div>
-                
+
                 <div className="social-links">
                     {socialLinks.map((social, index) => (
-                        <a 
-                            key={index} 
-                            href={social.href} 
-                            className="social-icon" 
+                        <a
+                            key={index}
+                            href={social.href}
+                            className="social-icon"
                             aria-label={social.label}
                             style={{ '--hover-color': social.color }}
                         >
@@ -34,7 +34,7 @@ const HomeFooter = () => {
                 </div>
 
                 <div className="footer-bottom">
-                    <p>&copy; {currentYear} Eduverse. All rights reserved.</p>
+                    <p>&copy; {currentYear} Encom. All rights reserved.</p>
                 </div>
             </div>
         </footer>
